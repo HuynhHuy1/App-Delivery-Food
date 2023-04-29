@@ -5,7 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.model.CategoryModel
+import com.example.fooddeliveryapp.model.FoodModel
+import com.example.fooddeliveryapp.view.customer.adapter.CategoryAdapter
+import com.example.fooddeliveryapp.view.customer.adapter.FoodAdapter
+
+//import com.example.fooddeliveryapp.view.customer.adapter.FoodAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,6 +47,33 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        var ListcategoryModel = listOf<CategoryModel>(
+            CategoryModel("Cappucino"),
+            CategoryModel("Latte"),
+            CategoryModel("Americano"),
+            CategoryModel("Machiato"),
+            CategoryModel("Cake"),
+        )
+        var listFood = listOf<FoodModel>(
+            FoodModel("Cappuccino","with milk", R.drawable.capucino1,"Cappuccino", 2.34),
+            FoodModel("Cappuccino","with chocolate", R.drawable.capuccino2,"Cappuccino", 2.52),
+            FoodModel("Cappuccino","with brown sugar", R.drawable.cappuccino3,"Cappuccino", 2.36),
+            FoodModel("Cappuccino","with white chocolate", R.drawable.cappuccino4,"Cappuccino", 2.21),
+            FoodModel("Cappuccino","with white chocolate", R.drawable.cappuccino4,"Cappuccino", 2.21),
+            FoodModel("Cappuccino","with white chocolate", R.drawable.cappuccino4,"Cappuccino", 2.21)
+        )
+        var adapterCategory = CategoryAdapter(ListcategoryModel)
+        var rcvCategory = view.findViewById<RecyclerView>(R.id.linear_list_cate1)
+        rcvCategory.adapter = adapterCategory
+        rcvCategory.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.HORIZONTAL,false)
+
+        var adapterFood = FoodAdapter(listFood)
+        var rcvFood = view.findViewById<RecyclerView>(R.id.rcvFood)
+        rcvFood.adapter = adapterFood
+        rcvFood.layoutManager = GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
+        }
     companion object {
         /**
          * Use this factory method to create a new instance of
