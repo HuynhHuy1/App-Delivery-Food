@@ -1,6 +1,7 @@
 package com.example.fooddeliveryapp.view.customer
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.example.fooddeliveryapp.model.CategoryModel
 import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.view.customer.adapter.CategoryAdapter
 import com.example.fooddeliveryapp.view.customer.adapter.FoodAdapter
+import com.example.fooddeliveryapp.view.customer.adapter.`interface`.handleOnClick
 
 //import com.example.fooddeliveryapp.view.customer.adapter.FoodAdapter
 
@@ -49,30 +51,70 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var listTea = CategoryModel("Tea")
+        var listCoffe =  CategoryModel("Coffee")
+        var listFreeze = CategoryModel("Freeze")
+        var listCake =  CategoryModel("Cake")
         var ListcategoryModel = listOf<CategoryModel>(
-            CategoryModel("Cappucino"),
-            CategoryModel("Latte"),
-            CategoryModel("Americano"),
-            CategoryModel("Machiato"),
-            CategoryModel("Cake"),
+            listCoffe,
+            listTea,listFreeze,listCake
         )
         var listFood = listOf<FoodModel>(
-            FoodModel("Cappuccino","with milk", R.drawable.capucino1,"Cappuccino", 2.34),
-            FoodModel("Cappuccino","with chocolate", R.drawable.capuccino2,"Cappuccino", 2.52),
-            FoodModel("Cappuccino","with brown sugar", R.drawable.cappuccino3,"Cappuccino", 2.36),
-            FoodModel("Cappuccino","with white chocolate", R.drawable.cappuccino4,"Cappuccino", 2.21),
-            FoodModel("Cappuccino","with white chocolate", R.drawable.cappuccino4,"Cappuccino", 2.21),
-            FoodModel("Cappuccino","with white chocolate", R.drawable.cappuccino4,"Cappuccino", 2.21)
-        )
-        var adapterCategory = CategoryAdapter(ListcategoryModel)
+            FoodModel("Cappuccino", R.drawable.capucino1,"Coffee", 2.34),
+            FoodModel("Espresso", R.drawable.cappuccino3,"Coffee", 2.36),
+            FoodModel("Americano", R.drawable.cappuccino4,"Coffee", 2.21),
+            FoodModel("Latte", R.drawable.capucino1,"Coffee", 2.31),
+            FoodModel("Lotus Tea", R.drawable.capuccino2,"Tea", 1.52),
+            FoodModel("Peach Tea",R.drawable.cappuccino3,"Tea", 2.64),
+            FoodModel("Lychee Tea", R.drawable.cappuccino4,"Tea", 2.21),
+            FoodModel("Green Tea",R.drawable.capucino1,"Tea", 1.23),
+            FoodModel("Chocolate freeze",R.drawable.capuccino2,"Freeze", 1.52),
+            FoodModel("Green tea freeze",R.drawable.cappuccino3,"Freeze", 2.16),
+            FoodModel("Caramel freeze",R.drawable.cappuccino4,"Freeze", 2.29),
+            FoodModel("Cookie freeze",R.drawable.cappuccino4,"Freeze", 2.29),
+            FoodModel("Banana cake",R.drawable.capucino1,"Cake", 2.36),
+            FoodModel("Tiramisu cake",R.drawable.capuccino2,"Cake", 2.12),
+            FoodModel("Chocolate cake", R.drawable.cappuccino3,"Cake", 2.36),
+            FoodModel("Caramel cake",R.drawable.cappuccino4,"Cake", 2.11),
+            )
+        addItemToCategory(listTea,listFood)
+        addItemToCategory(listCoffe,listFood)
+        addItemToCategory(listCake,listFood)
+        addItemToCategory(listFreeze,listFood)
+        Log.d("TAG", "${listTea.listFood[0].name}")
+        Log.d("TAG", "${listCake.listFood[0].name}")
+        Log.d("TAG", "${listCoffe.listFood[0].name}")
+        Log.d("TAG", "${listFreeze.listFood[0].name}")
+        var adapterCategory = CategoryAdapter(ListcategoryModel,object : handleOnClick{
+            override fun onClickItem(toString: String) {
+
+                for(category in ListcategoryModel){
+                    if(toString == category.name){
+                        Log.d("TAG", " ${toString}")
+                        var adapterFood = FoodAdapter(category.listFood)
+                        var rcvFood = view.findViewById<RecyclerView>(R.id.rcvFood)
+                        rcvFood.adapter = adapterFood
+                        rcvFood.layoutManager = GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
+                    }
+                    
+                }
+            }
+
+        })
+        var adapterFood = FoodAdapter(ListcategoryModel[0].listFood)
+        var rcvFood = view.findViewById<RecyclerView>(R.id.rcvFood)
+        rcvFood.adapter = adapterFood
+        rcvFood.layoutManager = GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
         var rcvCategory = view.findViewById<RecyclerView>(R.id.linear_list_cate1)
         rcvCategory.adapter = adapterCategory
         rcvCategory.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.HORIZONTAL,false)
 
-        var adapterFood = FoodAdapter(listFood)
-        var rcvFood = view.findViewById<RecyclerView>(R.id.rcvFood)
-        rcvFood.adapter = adapterFood
-        rcvFood.layoutManager = GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
+        }
+        fun addItemToCategory(category : CategoryModel, foodModel: List<FoodModel>) : List<FoodModel>{
+            for(i in foodModel.indices step 1){
+                foodModel[i].addToCategory(category)
+            }
+            return category.listFood
         }
     companion object {
         /**

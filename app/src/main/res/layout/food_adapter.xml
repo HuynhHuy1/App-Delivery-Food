@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginEnd="10dp"
     android:layout_marginTop="10dp"
+    android:layout_columnWeight="1"
     >
         <LinearLayout
             android:layout_width="wrap_content"
@@ -12,7 +13,6 @@
             android:background="@drawable/background_white"
             android:orientation="vertical"
             android:paddingBottom="20dp"
-            android:layout_columnWeight="1"
             android:layout_marginStart="10dp"
             >
             <androidx.cardview.widget.CardView
@@ -25,7 +25,7 @@
                 <ImageView
                     android:id="@+id/image_food_adapter"
                     android:layout_width="match_parent"
-                    android:layout_height="152dp"
+                    android:layout_height="match_parent"
                     android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
             <TextView
@@ -35,10 +35,10 @@
                 android:layout_marginStart="12dp"
                 android:textColor="@color/black"
                 android:text="Cappucino"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/sorabold"
                 android:lineHeight="20dp"
-                android:letterSpacing="0.06"
                 />
             <TextView
                 android:id="@+id/tv_subname_food_adapter"
@@ -46,7 +46,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:textColor="#9B9B9B"
-                android:text="with Chocolate"
                 android:textSize="14sp"
                 android:textStyle="italic"
                 android:lineHeight="16dp"

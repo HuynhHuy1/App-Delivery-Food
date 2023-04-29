@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.model.CategoryModel
 import com.example.fooddeliveryapp.model.FoodModel
+import com.example.fooddeliveryapp.view.customer.adapter.`interface`.handleOnClick
 import org.w3c.dom.Text
 import java.lang.reflect.Type
 import java.util.zip.Inflater
@@ -39,7 +40,6 @@ class FoodAdapter(var listData : List<FoodModel> ) : Adapter<FoodAdapter.viewHol
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
         holder.image.setImageResource(listData[position].image)
         holder.name.setText(listData[position].name)
-        holder.subName.setText(listData[position].subName)
         var price = listData[position].price
         holder.price.setText("$ ${price}")
     }
