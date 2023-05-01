@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
 import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.model.CategoryModel
-import com.example.fooddeliveryapp.view.customer.adapter.`interface`.handleOnClick
+import com.example.fooddeliveryapp.view.customer.`interface`.handleOnClick
 
 class CategoryAdapter(var listData : List<CategoryModel>,var  handleOnClick: handleOnClick) : Adapter<CategoryAdapter.viewHolder>() {
     class viewHolder(view :View ) : ViewHolder(view){
@@ -53,7 +53,6 @@ class CategoryAdapter(var listData : List<CategoryModel>,var  handleOnClick: han
 
                 }
 
-
             }
                 holder.itemView.setOnClickListener {
                 holder.isClicked = position // Cập nhật vị trí item được chọn
@@ -61,24 +60,7 @@ class CategoryAdapter(var listData : List<CategoryModel>,var  handleOnClick: han
                 notifyDataSetChanged()
                     holder.isActive = true
 
-                // Thông báo cho adapter cập nhật giao diện
-        }
-//        if(position == 0){
-//            holder.textView.text = listData[position].name
-//            holder.textView.setBackgroundResource(R.drawable.background_button_selected_list_custommer)
-//            holder.textView.setTextColor(ContextCompat.getColor(holder.textView.context, R.color.white))
-//        }
-//        else{
-//            holder.textView.text = listData[position].name
-//            holder.textView.setBackgroundResource(R.drawable.background_button_list_custommer)
-//            holder.textView.setTextColor(ContextCompat.getColor(holder.textView.context, R.color.black))
-//        }
-//        holder.itemView.setOnClickListener {
-//            // Đổi màu phần tử đang được nhấn
-//            holder.textView.setBackgroundResource(R.drawable.background_button_selected_list_custommer)
-//            holder.textView.setTextColor(ContextCompat.getColor(holder.textView.context, R.color.white))
-//            handleOnClick.onClickItem(holder.textView.text.toString())
-//        }
+                }
 
     }
 
