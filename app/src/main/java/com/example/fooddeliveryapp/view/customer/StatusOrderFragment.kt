@@ -7,7 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.view.customer.adapter.FoodStatusAdapter
 import com.example.fooddeliveryapp.viewmodel.SendDataViewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,6 +40,11 @@ class StatusOrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.orderItem.observe(viewLifecycleOwner) {
             Log.d("Status", "${it.foods.size} ")
+            var listFood = it.foods
+            var adapterFoodStatus = FoodStatusAdapter(listFood)
+            var rcvFoodStatus = view.findViewById<RecyclerView>(R.id.rcv_status_food)
+            rcvFoodStatus.adapter = adapterFoodStatus
+            rcvFoodStatus.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
         }
 
     }

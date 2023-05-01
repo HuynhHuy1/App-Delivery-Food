@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
     android:orientation="horizontal"
-    android:padding="5dp">
+    android:paddingStart="10dp">
 
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,6 +14,7 @@
     app:cardCornerRadius="15dp">
 
     <ImageView
+        android:id="@+id/image_status_food"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/capucino1" />
@@ -23,9 +24,11 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
-    >
+    android:orientation="vertical"
+    android:paddingTop="15dp">
 
     <TextView
+        android:id="@+id/name_food_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -33,16 +36,29 @@
         android:lineHeight="22dp"
         android:text="Cappucino"
         android:textColor="#2F2D2C"
-        android:textSize="16sp"
-        android:layout_gravity="center_vertical"/>
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/count_food_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/sorasemibold"
+        android:lineHeight="18dp"
+        android:text="x 2"
+        android:textColor="#9B9B9B"
+        android:textSize="13sp" />
 
 </LinearLayout>
 
 <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical"
-    android:layout_marginStart="90dp"
+    android:id="@+id/price_food_status"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="end"
+    android:paddingVertical="20dp"
+    android:layout_marginEnd="10dp"
     android:fontFamily="@font/sorasemibold"
     android:lineHeight="20dp"
     android:text="$ 5.53"

@@ -11,12 +11,9 @@ import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.view.customer.`interface`.handleFoodItem
 
-class FoodStatusAdapter(var listData : List<FoodModel>) : Adapter<FoodStatusAdapter.viewHolder>() {
+class OrderStatusAdapter(var listData : List<FoodModel>) : Adapter<OrderStatusAdapter.viewHolder>() {
     class viewHolder(view :View ) : ViewHolder(view){
-        var name = view.findViewById<TextView>(R.id.name_food_status)
-        var price = view.findViewById<TextView>(R.id.price_food_status)
-        var countFood = view.findViewById<TextView>(R.id.count_food_status)
-        var image = view.findViewById<ImageView>(R.id.image_status_food)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
