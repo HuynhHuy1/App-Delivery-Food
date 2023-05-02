@@ -1,7 +1,6 @@
 package com.example.fooddeliveryapp.view.customer
 
-import android.content.Context
-import android.graphics.ColorSpace.Model
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,32 +8,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.GONE
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.model.OrderModel
 import com.example.fooddeliveryapp.model.User
-import com.example.fooddeliveryapp.view.customer.adapter.CategoryAdapter
 import com.example.fooddeliveryapp.view.customer.adapter.OrderAdapter
-import com.example.fooddeliveryapp.view.customer.`interface`.SendData
+import com.example.fooddeliveryapp.view.customer.`interface`.handleAdd
 import com.example.fooddeliveryapp.viewmodel.SendDataViewModel
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
-import java.util.zip.Inflater
+import java.time.LocalDateTime
 
 class OrderFragment : Fragment() {
     val viewModel : SendDataViewModel by lazy {
         ViewModelProvider(requireActivity()).get(SendDataViewModel::class.java)
     }
-
+    var priceDeliveryNumber = 1.15
+    var price = 0.0
     lateinit var orderModel: OrderModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,12 +38,27 @@ class OrderFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_order, container, false)
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var user1  = User("Huy",R.drawable.avt2,"234 Le Trong Tan")
         var rcvOrder = view.findViewById<RecyclerView>(R.id.linear3)
         viewModel.listItem.observe(viewLifecycleOwner, Observer {
-            var adapterOrder = OrderAdapter(it)
+            var adapterOrder = OrderAdapter(it,object : handleAdd{
+                override fun handAddOnClick(foodModel: FoodModel) {
+                    var tempList = it.toMutableList()
+                    tempList.add(foodModel)
+                    viewModel.listItem.postValue(tempList.toList())
+                }
+
+                override fun handSubOnClick(foodModel: FoodModel) {
+                    var tempList = it.toMutableList()
+                    tempList.remove(foodModel)
+                    viewModel.listItem.postValue(tempList.toList())
+                }
+
+            })
+            setInfoOrder(view,user1,it)
             rcvOrder.adapter = adapterOrder
             rcvOrder.layoutManager =
                 LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
@@ -56,17 +66,25 @@ class OrderFragment : Fragment() {
                 view.findViewById<ConstraintLayout>(R.id.layout_order).visibility = View.GONE
             }
 
-            setInfoOrder(view,user1,it)
+
 
         })
     }
-    fun setInfoOrder(view: View,user: User,listData : List<FoodModel>) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setInfoOrder(view: View, user: User, listData : List<FoodModel>) {
+
+        listData.forEach{
+           price += it.price
+        }
         var addressUser = view.findViewById<TextView>(R.id.address_orderr)
         addressUser.text = user.address
         var priceFood = view.findViewById<TextView>(R.id.tv_order_food_number)
-        priceFood.text = "$ ${5.43}"
-        var priceDeliviry = view.findViewById<TextView>(R.id.tv_total_number_order)
-        priceDeliviry.text = "$ ${4.15}"
+        priceFood.text = "$ ${String.format("%.2f",price)}"
+        var priceDeliviry = view.findViewById<TextView>(R.id.price_delivery_order_number)
+
+        priceDeliviry.text = "$ ${1.15}"
+        var total = view.findViewById<TextView>(R.id.tv_total_number_order)
+        total.text = "$ ${String.format("%.2f",price + priceDeliveryNumber)}"
         var btnOrder = view.findViewById<TextView>(R.id.btnOrder)
         btnOrder.setOnClickListener{
             handleOrder(user,listData,view)
@@ -80,9 +98,12 @@ class OrderFragment : Fragment() {
             Log.d("Tag", "Edit on Click ")
         }
     }
-    fun handleOrder(user: User,listData : List<FoodModel>,view: View){
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun handleOrder(user: User, listData : List<FoodModel>, view: View){
         var statusOrderFragment = StatusOrderFragment()
-        orderModel = OrderModel(user.address,listData,user,1.3,"Complete")
+        var timerOrder = LocalDateTime.now().toString()
+        var total = price + priceDeliveryNumber
+        orderModel = OrderModel(user.address,listData,user,total,"Complete",timerOrder)
         viewModel.setOrder(orderModel)
         Log.d("Order", "order thanh cong")
         requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment,statusOrderFragment).commit()

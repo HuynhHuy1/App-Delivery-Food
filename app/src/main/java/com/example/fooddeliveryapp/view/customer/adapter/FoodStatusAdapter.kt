@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapp.view.customer.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ class FoodStatusAdapter(var listData : List<FoodModel>) : Adapter<FoodStatusAdap
         var name = view.findViewById<TextView>(R.id.name_food_status)
         var price = view.findViewById<TextView>(R.id.price_food_status)
         var countFood = view.findViewById<TextView>(R.id.count_food_status)
+        var count = 0
         var image = view.findViewById<ImageView>(R.id.image_status_food)
     }
 
@@ -25,11 +27,20 @@ class FoodStatusAdapter(var listData : List<FoodModel>) : Adapter<FoodStatusAdap
     }
 
     override fun getItemCount(): Int {
-        return listData.size
+        return listData.distinct().size
     }
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
         holder.name.text = listData[position].name
-        holder.price.text = "$ ${ listData[position].price }"
+        var listData2 = listData.distinct()
+        holder.name.text = listData2[position].name
+        listData.forEach{
+            if(it.name == holder.name.text.toString()){
+                holder.count += 1
+            }
+        }
+        holder.countFood.text = "x ${holder.count}"
+
+        holder.price.text = "$ ${String.format("%.02f",listData[position].price * holder.count)  }"
         holder.image.setImageResource(listData[position].image)
     }
 }

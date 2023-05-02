@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -85,7 +86,7 @@ class HomeFragment : Fragment() {
     private fun handleAddItemHome(view: View, listAddItem : ArrayList<FoodModel>,foodModel: FoodModel){
         listAddItem.add(foodModel)
         viewModel.setListItem(listAddItem)
-        Log.d("TAG", "Add thanh cong")
+        Toast.makeText(view.context,"Add Success",Toast.LENGTH_SHORT).show()
     }
 
     private fun addItemToCategory(category : CategoryModel, foodModel: List<FoodModel>) : List<FoodModel>{
