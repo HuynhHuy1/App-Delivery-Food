@@ -50,7 +50,6 @@ class CategoryAdapter(var listData : List<CategoryModel>,var  handleOnClick: han
                         holder.textView.setBackgroundResource(R.drawable.background_button_selected_list_custommer)
                         holder.isClicked = position -1
                     }
-
                 }
 
             }
@@ -59,7 +58,6 @@ class CategoryAdapter(var listData : List<CategoryModel>,var  handleOnClick: han
                 handleOnClick.onClickItem(holder.textView.text.toString())
                 notifyDataSetChanged()
                     holder.isActive = true
-
                 }
 
     }

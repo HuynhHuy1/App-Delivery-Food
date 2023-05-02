@@ -44,12 +44,13 @@
         android:layout_marginEnd="25dp"
         app:cardCornerRadius="20dp"
         >
+
         <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/avt3"
+            android:id="@+id/image_info"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
             android:scaleType="fitXY"
-            />
+            android:src="@drawable/avt3" />
     </androidx.cardview.widget.CardView>
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_custommer"

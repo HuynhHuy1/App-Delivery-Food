@@ -39,6 +39,7 @@
             android:background="@drawable/background_gray"
             >
         <ImageView
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
@@ -56,20 +57,24 @@
             android:layout_gravity="center"
             />
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/profile_ed1"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginTop="40dp"
             android:layout_marginBottom="20dp"
             android:hint="What’s your first name?"
+            android:textColor="#555555"
             android:textColorHint="#555555"
             android:paddingHorizontal="20dp"
             android:fontFamily="@font/sorasemibold"
             android:background="@drawable/background_white_boder"
             />
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/profile_ed2"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginBottom="20dp"
+            android:textColor="#555555"
             android:hint="What’s your last name?"
             android:textColorHint="#555555"
             android:paddingHorizontal="20dp"
@@ -77,26 +82,31 @@
             android:background="@drawable/background_white_boder"
             />
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/profile_ed3"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginBottom="20dp"
             android:hint="What’s your address?"
+            android:textColor="#555555"
             android:textColorHint="#555555"
             android:paddingHorizontal="20dp"
             android:fontFamily="@font/sorasemibold"
             android:background="@drawable/background_white_boder"
             />
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/profile_ed4"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginBottom="20dp"
             android:hint="Phone number?"
+            android:textColor="#555555"
             android:textColorHint="#555555"
             android:paddingHorizontal="20dp"
             android:fontFamily="@font/sorasemibold"
             android:background="@drawable/background_white_boder"
             />
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_updateInfo"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginTop="20dp"

@@ -5,29 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.model.User
+import com.example.fooddeliveryapp.viewmodel.SendDataViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [profileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class profileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val viewModel : SendDataViewModel by lazy{
+        ViewModelProvider(requireActivity()).get(SendDataViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -38,23 +28,25 @@ class profileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment profileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            profileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
     }
+    private fun checkInputInfo(view: View){
+        val tv1 = view.findViewById<EditText>(R.id.profile_ed1).toString()
+        val tv2 = view.findViewById<EditText>(R.id.profile_ed2).toString()
+        val tv3 = view.findViewById<EditText>(R.id.profile_ed3).toString()
+        val tv4 = view.findViewById<EditText>(R.id.profile_ed4).toString()
+        val imageInfo = view.findViewById<ImageView>(R.id.image_info)
+        val btnUpdateInfo = view.findViewById<Button>(R.id.btn_updateInfo)
+        btnUpdateInfo.setOnClickListener{
+            if(tv1 == "" || tv2 == "" || tv3 == "" || tv4 == "" ){
+                Toast.makeText(view.context,"Please Enter Full Fiel",Toast.LENGTH_SHORT)
+            }
+            else{
+                Toast.makeText(view.context,"Update Success",Toast.LENGTH_SHORT).show()
+                val user = User(tv1.toString(),)
+            }
+        }
+    }
+
 }
