@@ -49,12 +49,15 @@ class OrderFragment : Fragment() {
                     var tempList = it.toMutableList()
                     tempList.add(foodModel)
                     viewModel.listItem.postValue(tempList.toList())
+                    Log.d("List 10","${it.size}")
                 }
 
                 override fun handSubOnClick(foodModel: FoodModel) {
                     var tempList = it.toMutableList()
                     tempList.remove(foodModel)
                     viewModel.listItem.postValue(tempList.toList())
+                    Log.d("List 11","${it.size}")
+
                 }
 
             })
@@ -66,14 +69,13 @@ class OrderFragment : Fragment() {
                 view.findViewById<ConstraintLayout>(R.id.layout_order).visibility = View.GONE
             }
 
-
-
         })
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun setInfoOrder(view: View, user: User, listData : List<FoodModel>) {
-
+        price = 0.0
         listData.forEach{
+            Log.d("TAG", "for each : ${listData.size} ")
            price += it.price
         }
         var addressUser = view.findViewById<TextView>(R.id.address_orderr)
@@ -101,9 +103,15 @@ class OrderFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun handleOrder(user: User, listData : List<FoodModel>, view: View){
         var statusOrderFragment = StatusOrderFragment()
-        var timerOrder = LocalDateTime.now().toString()
+        val timerOrder = LocalDateTime.now()
+        val hour = timerOrder.hour
+        val minute = timerOrder.minute
+        val day = timerOrder.dayOfMonth
+        val motnh = timerOrder.monthValue
+        val year = timerOrder.year
+        val time = "${day}/${motnh}/${year}, ${hour}:${minute}"
         var total = price + priceDeliveryNumber
-        orderModel = OrderModel(user.address,listData,user,total,"Complete",timerOrder)
+        orderModel = OrderModel(user.address,listData,user,total,"Complete",time)
         viewModel.setOrder(orderModel)
         Log.d("Order", "order thanh cong")
         requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment,statusOrderFragment).commit()

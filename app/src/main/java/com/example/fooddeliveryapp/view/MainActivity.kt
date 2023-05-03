@@ -6,6 +6,8 @@ import android.view.View
 import androidx.cardview.widget.CardView
 import androidx.core.os.persistableBundleOf
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.database.ConfigFirebase
+import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.view.customer.HomeFragment
 import com.example.fooddeliveryapp.view.customer.OrderFragment
 import com.example.fooddeliveryapp.view.customer.StatusOrderFragment
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         var homeFragment = HomeFragment()
         var orderFragment = OrderFragment()
         var oderStatus = StatusOrderFragment()
+
         supportFragmentManager.beginTransaction().replace(R.id.fragment,homeFragment).commit()
         var bottomnav = findViewById<BottomNavigationView>(R.id.bottomNavigationView_order)
         bottomnav.setOnNavigationItemSelectedListener { menuItem ->

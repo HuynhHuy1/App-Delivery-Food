@@ -41,6 +41,6 @@ class FoodStatusAdapter(var listData : List<FoodModel>) : Adapter<FoodStatusAdap
         holder.countFood.text = "x ${holder.count}"
 
         holder.price.text = "$ ${String.format("%.02f",listData[position].price * holder.count)  }"
-        holder.image.setImageResource(listData[position].image)
+        holder.image.setImageResource(listData[position].image.toInt())
     }
 }

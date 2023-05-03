@@ -28,7 +28,7 @@ class FoodAdapter(var listData : List<FoodModel>,var handleFoodItem: handleFoodI
         return listData.size
     }
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        holder.image.setImageResource(listData[position].image)
+        holder.image.setImageResource(listData[position].image.toInt())
         holder.name.setText(listData[position].name)
         var price = listData[position].price
         var foodModel = listData[position]

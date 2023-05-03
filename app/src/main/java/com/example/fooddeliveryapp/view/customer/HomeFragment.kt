@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.database.ConfigFirebase
 import com.example.fooddeliveryapp.model.CategoryModel
 import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.view.customer.adapter.CategoryAdapter
@@ -40,6 +41,7 @@ class HomeFragment : Fragment() {
     private val viewModel : SendDataViewModel by lazy{
         ViewModelProvider(requireActivity()).get(SendDataViewModel::class.java)
     }
+    var list = listOf<FoodModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,11 +52,16 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var listData = listOf<FoodModel>()
+        var configFirebase = ConfigFirebase()
+        configFirebase.firebaseReferenceFood{
+            list = it.toList()
+            listData = list
+        }
         var listTea = CategoryModel("Tea")
         var listCoffe =  CategoryModel("Coffee")
         var listFreeze = CategoryModel("Freeze")
         var listCake =  CategoryModel("Cake")
-        var listData = loadData()
         var listAddItem = arrayListOf<FoodModel>()
         var ListcategoryModel = listOf<CategoryModel>(
             listCoffe,
@@ -83,6 +90,7 @@ class HomeFragment : Fragment() {
         })
         onClickInfo(view)
         setAdapter(view,adapterFood,adapterCategory)
+
     }
 
 
@@ -134,22 +142,29 @@ class HomeFragment : Fragment() {
 
         private fun loadData() : List<FoodModel>{
             return listOf(
-                FoodModel("Cappuccino", R.drawable.capucino1,"Coffee", 2.34),
-                FoodModel("Espresso", R.drawable.cappuccino3,"Coffee", 2.36),
-                FoodModel("Americano", R.drawable.cappuccino4,"Coffee", 2.21),
-                FoodModel("Latte", R.drawable.capucino1,"Coffee", 2.31),
-                FoodModel("Lotus Tea", R.drawable.capuccino2,"Tea", 1.52),
-                FoodModel("Peach Tea",R.drawable.cappuccino3,"Tea", 2.64),
-                FoodModel("Lychee Tea", R.drawable.cappuccino4,"Tea", 2.21),
-                FoodModel("Green Tea",R.drawable.capucino1,"Tea", 1.23),
-                FoodModel("Chocolate freeze",R.drawable.capuccino2,"Freeze", 1.52),
-                FoodModel("Green tea freeze",R.drawable.cappuccino3,"Freeze", 2.16),
-                FoodModel("Caramel freeze",R.drawable.cappuccino4,"Freeze", 2.29),
-                FoodModel("Cookie freeze",R.drawable.cappuccino4,"Freeze", 2.29),
-                FoodModel("Banana cake",R.drawable.capucino1,"Cake", 2.36),
-                FoodModel("Tiramisu cake",R.drawable.capuccino2,"Cake", 2.12),
-                FoodModel("Chocolate cake", R.drawable.cappuccino3,"Cake", 2.36),
-                FoodModel("Caramel cake",R.drawable.cappuccino4,"Cake", 2.11),
+                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
+//                FoodModel("Espresso", R.drawable.cappuccino3.toString(),"Coffee", 2.36),
+//                FoodModel("Americano", R.drawable.cappuccino4.toString(),"Coffee", 2.21),
+//                FoodModel("Latte", R.drawable.capucino1.toString(),"Coffee", 2.31),
+//                FoodModel("Lotus Tea", R.drawable.capuccino2.toString(),"Tea", 1.52),
+//                FoodModel("Peach Tea",R.drawable.cappuccino3.toString(),"Tea", 2.64),
+//                FoodModel("Lychee Tea", R.drawable.cappuccino4.toString(),"Tea", 2.21),
+//                FoodModel("Green Tea",R.drawable.capucino1.toString(),"Tea", 1.23),
+//                FoodModel("Chocolate freeze",R.drawable.capuccino2.toString(),"Freeze", 1.52),
+//                FoodModel("Green tea freeze",R.drawable.cappuccino3.toString(),"Freeze", 2.16),
+//                FoodModel("Caramel freeze",R.drawable.cappuccino4.toString(),"Freeze", 2.29),
+//                FoodModel("Cookie freeze",R.drawable.cappuccino4.toString(),"Freeze", 2.29),
+//                FoodModel("Banana cake",R.drawable.capucino1.toString(),"Cake", 2.36),
+//                FoodModel("Tiramisu cake",R.drawable.capuccino2.toString(),"Cake", 2.12),
+//                FoodModel("Chocolate cake", R.drawable.cappuccino3.toString(),"Cake", 2.36),
+//                FoodModel("Caramel cake",R.drawable.cappuccino4.toString(),"Cake", 2.11),
             )
 
         }

@@ -40,12 +40,13 @@ class OrderAdapter(var listData : List<FoodModel>,var handleAdd: handleAdd ) : A
             }
         }
         holder.tvCount.text = "${holder.count -1}"
-        holder.image.setImageResource(listData2[position].image)
+        listData2[position].image?.let { holder.image.setImageResource(it.toInt()) }
         holder.itemView.findViewById<Button>(R.id.addBtn).setOnClickListener {
             var countUpdate = holder.itemView.findViewById<TextView>(R.id.count_item).text.toString().toInt()
             countUpdate += 1
             holder.itemView.findViewById<TextView>(R.id.count_item).text = "${countUpdate}"
             handleAdd.handAddOnClick(listData2[position])
+            Log.d("add 1", "${listData2[position].name} ")
         }
         holder.itemView.findViewById<Button>(R.id.subBtn).setOnClickListener {
             if(holder.count > 0){
@@ -53,6 +54,7 @@ class OrderAdapter(var listData : List<FoodModel>,var handleAdd: handleAdd ) : A
                 countUpdate -= 1
                 holder.itemView.findViewById<TextView>(R.id.count_item).text = "${countUpdate}"
                 handleAdd.handSubOnClick(listData2[position])
+                Log.d("add 2", "${listData2[position].name} ")
             }
         }
     }

@@ -44,7 +44,7 @@ class profileFragment : Fragment() {
             }
             else{
                 Toast.makeText(view.context,"Update Success",Toast.LENGTH_SHORT).show()
-                val user = User(tv1.toString(),)
+
             }
         }
     }
