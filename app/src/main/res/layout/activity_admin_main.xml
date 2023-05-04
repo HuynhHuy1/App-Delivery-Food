@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.customer.MainActivity"
+    android:background="#F9F9F9">
+
+    <FrameLayout
+        android:id="@+id/fragmentAdmin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView_Admin"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:elevation="1dp"
+        />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView_Admin"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/background_white"
+        app:itemIconSize="30dp"
+        app:itemIconTint="#8D8D8D"
+        app:itemTextColor="@color/black"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_admin"
+        app:elevation="1dp"
+        />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        app:backgroundTint="#FF9D5B"
+        android:contentDescription="Submit"
+        android:elevation="100dp"
+        android:src="@drawable/baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView_Admin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdminCate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:contentDescription="Submit"
+        android:layout_marginStart="50dp"
+        android:elevation="100dp"
+        android:src="@drawable/baseline_category_24"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/fabAdmin"
+        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="invisible"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdminAdd1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:contentDescription="Submit"
+        android:elevation="100dp"
+        android:src="@drawable/baseline_local_drink_24"
+        android:visibility="invisible"
+        app:backgroundTint="@color/white"
+        android:layout_marginStart="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView_Admin"
+        app:layout_constraintBottom_toTopOf="@+id/fabAdmin"
+        app:layout_constraintStart_toEndOf="@+id/fabAdminCate" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

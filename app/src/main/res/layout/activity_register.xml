@@ -33,6 +33,7 @@
         android:layout_alignParentLeft="true"
         />
     <EditText
+        android:id="@+id/tvUserNameRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="29dp"
@@ -57,6 +58,7 @@
         android:layout_alignParentLeft="true"
         />
     <EditText
+        android:id="@+id/tvPassWordRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="29dp"
@@ -81,6 +83,7 @@
         android:layout_alignParentLeft="true"
         />
     <EditText
+        android:id="@+id/tvConFirmRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="29dp"
@@ -93,6 +96,7 @@
         android:paddingBottom="20dp"
         />
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginStart="85dp"

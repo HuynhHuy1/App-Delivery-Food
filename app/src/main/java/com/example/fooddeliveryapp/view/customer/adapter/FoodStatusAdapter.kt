@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.view.customer.`interface`.handleFoodItem
+import com.squareup.picasso.Picasso
 
 class FoodStatusAdapter(var listData : List<FoodModel>) : Adapter<FoodStatusAdapter.viewHolder>() {
     class viewHolder(view :View ) : ViewHolder(view){
@@ -41,6 +42,6 @@ class FoodStatusAdapter(var listData : List<FoodModel>) : Adapter<FoodStatusAdap
         holder.countFood.text = "x ${holder.count}"
 
         holder.price.text = "$ ${String.format("%.02f",listData[position].price * holder.count)  }"
-        holder.image.setImageResource(listData[position].image.toInt())
+        Picasso.get().load(listData2[position].image).into(holder.image)
     }
 }

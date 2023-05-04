@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.view.customer.`interface`.handleFoodItem
+import com.squareup.picasso.Picasso
 
 class FoodAdapter(var listData : List<FoodModel>,var handleFoodItem: handleFoodItem) : Adapter<FoodAdapter.viewHolder>() {
     class viewHolder(view :View ) : ViewHolder(view){
@@ -28,7 +29,7 @@ class FoodAdapter(var listData : List<FoodModel>,var handleFoodItem: handleFoodI
         return listData.size
     }
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        holder.image.setImageResource(listData[position].image.toInt())
+        Picasso.get().load(listData[position].image).into(holder.image)
         holder.name.setText(listData[position].name)
         var price = listData[position].price
         var foodModel = listData[position]

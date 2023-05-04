@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapp.view
+package com.example.fooddeliveryapp.view.customer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

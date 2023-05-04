@@ -17,4 +17,11 @@
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
     </style>
+    <style name="Theme.FOODDELIVERYAPP.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.FOODDELIVERYAPP.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.FOODDELIVERYAPP.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

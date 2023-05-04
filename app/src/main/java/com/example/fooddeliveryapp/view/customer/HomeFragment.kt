@@ -41,7 +41,6 @@ class HomeFragment : Fragment() {
     private val viewModel : SendDataViewModel by lazy{
         ViewModelProvider(requireActivity()).get(SendDataViewModel::class.java)
     }
-    var list = listOf<FoodModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,48 +51,46 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var listData = listOf<FoodModel>()
         var configFirebase = ConfigFirebase()
         configFirebase.firebaseReferenceFood{
-            list = it.toList()
-            listData = list
-        }
-        var listTea = CategoryModel("Tea")
-        var listCoffe =  CategoryModel("Coffee")
-        var listFreeze = CategoryModel("Freeze")
-        var listCake =  CategoryModel("Cake")
-        var listAddItem = arrayListOf<FoodModel>()
-        var ListcategoryModel = listOf<CategoryModel>(
-            listCoffe,
-            listTea,listFreeze,listCake
-        )
-        addItemToCategory(listTea,listData)
-        addItemToCategory(listCoffe,listData)
-        addItemToCategory(listCake,listData)
-        addItemToCategory(listFreeze,listData)
-        var adapterCategory = CategoryAdapter(ListcategoryModel,object : handleOnClick {
-            override fun onClickItem(toString: String) {
-                clickItemCategory(ListcategoryModel,toString,view,object : handleFoodItem {
-                    override fun clickAddFood(view: View, foodModel: FoodModel) {
-                        handleAddItemHome(view,listAddItem,foodModel)
-                        Log.d("List Add Item", "${1} : ${listAddItem[0].name}" )
-                    }
-                })
-            }
-        })
-        var adapterFood = FoodAdapter(ListcategoryModel[0].listFood,object : handleFoodItem {
-            override fun clickAddFood(view: View, foodModel: FoodModel) {
-                handleAddItemHome(view,listAddItem,foodModel)
-                Log.d("List Add Item", "${1} : ${listAddItem[0].name}" )
-            }
+            var list = it.toList()
+            var listData = loadData(list)
+            var listTea = CategoryModel("Tea")
+            var listCoffe =  CategoryModel("Coffee")
+            var listFreeze = CategoryModel("Freeze")
+            var listCake =  CategoryModel("Cake")
+            var listAddItem = arrayListOf<FoodModel>()
+            var ListcategoryModel = listOf<CategoryModel>(
+                listCoffe,
+                listTea,listFreeze,listCake
+            )
+            addItemToCategory(listTea,listData)
+            addItemToCategory(listCoffe,listData)
+            addItemToCategory(listCake,listData)
+            addItemToCategory(listFreeze,listData)
+            var adapterCategory = CategoryAdapter(ListcategoryModel,object : handleOnClick {
+                override fun onClickItem(toString: String) {
+                    clickItemCategory(ListcategoryModel,toString,view,object : handleFoodItem {
+                        override fun clickAddFood(view: View, foodModel: FoodModel) {
+                            handleAddItemHome(view,listAddItem,foodModel)
+                            Log.d("List Add Item", "${1} : ${listAddItem[0].name}" )
+                        }
+                    })
+                }
+            })
+            var adapterFood = FoodAdapter(ListcategoryModel[0].listFood,object : handleFoodItem {
+                override fun clickAddFood(view: View, foodModel: FoodModel) {
+                    handleAddItemHome(view,listAddItem,foodModel)
+                    Log.d("List Add Item", "${1} : ${listAddItem[0].name}" )
+                }
 
-        })
-        onClickInfo(view)
-        setAdapter(view,adapterFood,adapterCategory)
+            })
+            onClickInfo(view)
+            setAdapter(view,adapterFood,adapterCategory)
+        }
+
 
     }
-
-
     private fun handleAddItemHome(view: View, listAddItem : ArrayList<FoodModel>,foodModel: FoodModel){
         listAddItem.add(foodModel)
         viewModel.setListItem(listAddItem)
@@ -121,7 +118,6 @@ class HomeFragment : Fragment() {
                     rcvFood.adapter = adapterFood
                     rcvFood.layoutManager = GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
                 }
-
             }
         }
        private fun setAdapter(view : View, adapterFood: FoodAdapter,adapterCategory: CategoryAdapter){
@@ -140,16 +136,16 @@ class HomeFragment : Fragment() {
             }
         }
 
-        private fun loadData() : List<FoodModel>{
+        private fun loadData(list : List<FoodModel>) : List<FoodModel>{
             return listOf(
-                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
-                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
-                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
-                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
-                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
-                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
-                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
-                FoodModel("${list[0].name}", R.drawable.capucino1.toString(),"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", list[0].image,"${list[0].category}", list[0].price),
+                FoodModel("${list[1].name}",list[1].image,"${list[1].category}", list[0].price),
+                FoodModel("${list[2].name}", list[2].image,"${list[2].category}", list[0].price),
+                FoodModel("${list[0].name}", list[0].image,"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", list[1].image,"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", list[2].image,"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", list[0].image,"${list[0].category}", list[0].price),
+                FoodModel("${list[0].name}", list[1].image,"${list[0].category}", list[0].price),
 //                FoodModel("Espresso", R.drawable.cappuccino3.toString(),"Coffee", 2.36),
 //                FoodModel("Americano", R.drawable.cappuccino4.toString(),"Coffee", 2.21),
 //                FoodModel("Latte", R.drawable.capucino1.toString(),"Coffee", 2.31),

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.view.customer.`interface`.handleAdd
+import com.squareup.picasso.Picasso
 
 class OrderAdapter(var listData : List<FoodModel>,var handleAdd: handleAdd ) : Adapter<OrderAdapter.viewHolder>() {
     class viewHolder(view :View ) : ViewHolder(view){
@@ -40,13 +41,12 @@ class OrderAdapter(var listData : List<FoodModel>,var handleAdd: handleAdd ) : A
             }
         }
         holder.tvCount.text = "${holder.count -1}"
-        listData2[position].image?.let { holder.image.setImageResource(it.toInt()) }
+        Picasso.get().load(listData2[position].image).into(holder.image)
         holder.itemView.findViewById<Button>(R.id.addBtn).setOnClickListener {
             var countUpdate = holder.itemView.findViewById<TextView>(R.id.count_item).text.toString().toInt()
             countUpdate += 1
             holder.itemView.findViewById<TextView>(R.id.count_item).text = "${countUpdate}"
             handleAdd.handAddOnClick(listData2[position])
-            Log.d("add 1", "${listData2[position].name} ")
         }
         holder.itemView.findViewById<Button>(R.id.subBtn).setOnClickListener {
             if(holder.count > 0){
@@ -54,7 +54,6 @@ class OrderAdapter(var listData : List<FoodModel>,var handleAdd: handleAdd ) : A
                 countUpdate -= 1
                 holder.itemView.findViewById<TextView>(R.id.count_item).text = "${countUpdate}"
                 handleAdd.handSubOnClick(listData2[position])
-                Log.d("add 2", "${listData2[position].name} ")
             }
         }
     }
