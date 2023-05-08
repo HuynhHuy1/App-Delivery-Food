@@ -4,46 +4,72 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.FrameLayout
+import android.view.*
+import android.widget.*
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.viewpager2.widget.ViewPager2
 import com.example.fooddeliveryapp.R
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.fooddeliveryapp.view.admin.adapter.AdapterViewPager2
+import com.google.android.material.navigation.NavigationView
 
 class AdminMainActivity : AppCompatActivity() {
-    @SuppressLint("ResourceAsColor")
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var toggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_main)
-        var MenuFragment = MenuFragment()
-        var orderFragmnet = OrderFragmentAdmin()
-        supportFragmentManager.beginTransaction().replace(R.id.fragmentAdmin,orderFragmnet).commitNow()
-        var bottomnav = findViewById<BottomNavigationView>(R.id.bottomNavigationView_Admin)
-        bottomnav.setOnNavigationItemSelectedListener { menuItem ->
-            when(menuItem.itemId){
-                R.id.managerStatusFood -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentAdmin,orderFragmnet).commitNow()
+        var viewPager2 = findViewById<ViewPager2>(R.id.myViewpager)
+        var tv1 = findViewById<TextView>(R.id.tv_menu_inProgress)
+        var tv2 = findViewById<TextView>(R.id.tv_menu_complete)
+        var adapterViewPager2 = AdapterViewPager2(this)
+        viewPager2.adapter = adapterViewPager2
+        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            @SuppressLint("ResourceAsColor")
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                    when(position){
+                        0 -> {
+                           tv1.setTextColor(resources.getColor(R.color.teal_700));
+                            tv2.setTextColor(resources.getColor(R.color.white));
+
+                            Log.d("TAG", "onPageSelected: ${position}")
+                        }
+                        1 -> {
+                            tv1.setTextColor(getResources().getColor(R.color.white));
+                            tv2.setTextColor(getResources().getColor(R.color.teal_700));
+                        }
+                    }
+            }
+        }
+        )
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        val drawNavi = findViewById<DrawerLayout>(R.id.drawerLayout_admin1)
+        var accBarToggle = ActionBarDrawerToggle(this, drawNavi,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+        drawNavi.addDrawerListener(accBarToggle)
+        accBarToggle.syncState()
+        handleClickItem()
+    }
+    private fun handleClickItem(){
+        var menuFragment = MenuFragment()
+        var updateFragmentAdmin = FoodManageFragment()
+        val navigationView = findViewById<NavigationView>(R.id.drawerLayout_admin_home)
+        navigationView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.manageMenuNavi -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,menuFragment).commitNow()
+                    Log.d("TAG", "handleClickItem: ")
                     true
                 }
-                R.id.managerMenu -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentAdmin,MenuFragment).commitNow()
+                R.id.manageShopNavi2 -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,updateFragmentAdmin).commitNow()
+                    Log.d("TAG", "handleClickItem:1 ")
                     true
                 }
                 else -> false
             }
-        }
-        var fabAdmin = findViewById<FloatingActionButton>(R.id.fabAdmin)
-        var fabAdminAdd = findViewById<FloatingActionButton>(R.id.fabAdminAdd1)
-        var fabAdminCate = findViewById<FloatingActionButton>(R.id.fabAdminCate)
-        fabAdmin.setOnClickListener{
-            fabAdminAdd.show()
-            fabAdminCate.show()
-            fabAdminCate.setOnClickListener{
-                Log.d("TAG", "Cate Click")
-            }
-            fabAdminAdd.setOnClickListener{
-                Log.d("TAG", "Add")
-            }
-        }
+
     }
+}
 }

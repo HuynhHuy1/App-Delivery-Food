@@ -57,17 +57,17 @@ class HomeFragment : Fragment() {
             var listData = loadData(list)
             var listTea = CategoryModel("Tea")
             var listCoffe =  CategoryModel("Coffee")
-            var listFreeze = CategoryModel("Freeze")
+            var listFreeze = CategoryModel("Ice Blended")
             var listCake =  CategoryModel("Cake")
             var listAddItem = arrayListOf<FoodModel>()
             var ListcategoryModel = listOf<CategoryModel>(
                 listCoffe,
                 listTea,listFreeze,listCake
             )
-            addItemToCategory(listTea,listData)
-            addItemToCategory(listCoffe,listData)
-            addItemToCategory(listCake,listData)
-            addItemToCategory(listFreeze,listData)
+            addItemToCategory(listTea,list)
+            addItemToCategory(listCoffe,list)
+            addItemToCategory(listCake,list)
+            addItemToCategory(listFreeze,list)
             var adapterCategory = CategoryAdapter(ListcategoryModel,object : handleOnClick {
                 override fun onClickItem(toString: String) {
                     clickItemCategory(ListcategoryModel,toString,view,object : handleFoodItem {
@@ -78,7 +78,7 @@ class HomeFragment : Fragment() {
                     })
                 }
             })
-            var adapterFood = FoodAdapter(ListcategoryModel[0].listFood,object : handleFoodItem {
+            var adapterFood = FoodAdapter(list,object : handleFoodItem {
                 override fun clickAddFood(view: View, foodModel: FoodModel) {
                     handleAddItemHome(view,listAddItem,foodModel)
                     Log.d("List Add Item", "${1} : ${listAddItem[0].name}" )

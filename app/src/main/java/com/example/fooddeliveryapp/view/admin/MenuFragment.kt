@@ -1,11 +1,25 @@
 package com.example.fooddeliveryapp.view.admin
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.GridLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.model.CategoryModel
+import com.example.fooddeliveryapp.view.admin.adapter.onClickItemMenu
+import com.example.fooddeliveryapp.view.customer.adapter.AdapterMenuAdmin
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,17 +32,6 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class MenuFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,23 +41,57 @@ class MenuFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_menu, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MenuFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MenuFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val fragment_admin = requireActivity().findViewById<FrameLayout>(R.id.fragment_admin)
+        requireActivity().findViewById<GridLayout>(R.id.gridLayout_admin).visibility = View.GONE
+        val fabAdminMenu = view.findViewById<FloatingActionButton>(R.id.fab_menu_admin)
+        val FoodManageFragment = FoodManageFragment()
+        fragment_admin.visibility = View.VISIBLE
+        val listCategory = listOf<CategoryModel>(
+            CategoryModel("Tea"),
+            CategoryModel("Coffee"),
+            CategoryModel("Cake"),
+            CategoryModel("Freeze"),
+        )
+        val adapter = AdapterMenuAdmin(listCategory,object : onClickItemMenu{
+            override fun handleOnClickItem(toString: String) {
+                var data = Bundle()
+                data.putString("Category",toString)
+                FoodManageFragment.arguments = data
+                requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,FoodManageFragment).commitNow()
             }
+
+        })
+        val rcvMenu = view.findViewById<RecyclerView>(R.id.rcv_menu_admin)
+        rcvMenu.adapter = adapter
+        rcvMenu.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
+
+        fabAdminMenu.setOnClickListener{
+            handOnClickFAB(it)
+        }
     }
+    fun handOnClickFAB(view: View){
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_add_category, null)
+        val builder = AlertDialog.Builder(context)
+            .setView(dialogView)
+        val alertDialog = builder.create()
+        alertDialog.show()
+
+        // handle OK button click
+            dialogView.findViewById<Button>(R.id.btn_add_category).setOnClickListener {
+                val editText = dialogView.findViewById<EditText>(R.id.ed_add_category)
+                val inputText = editText.text.toString()
+                // do something with the input text
+
+                alertDialog.dismiss()
+            }
+
+        // handle Cancel button click
+            dialogView.findViewById<Button>(R.id.btn_cancle_category).setOnClickListener {
+                alertDialog.dismiss()
+            }
+
+    }
+
 }
