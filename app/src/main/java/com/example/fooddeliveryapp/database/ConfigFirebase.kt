@@ -1,6 +1,7 @@
 package com.example.fooddeliveryapp.database
 
 import android.util.Log
+import com.example.fooddeliveryapp.model.CategoryModel
 import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.view.customer.`interface`.handleGetData
 import com.google.firebase.database.*
@@ -36,9 +37,25 @@ class ConfigFirebase() {
                 override fun onCancelled(error: DatabaseError) {
                     Log.d("TAG", "Lỗi get data")
                 }
-
             }
             )
         }
+    fun getCategoryFromFirebase(callback: (ArrayList<CategoryModel>) -> Unit){
+        var dbRefCategory = dbInstance.getReference("Category")
+        var listCategory = ArrayList<CategoryModel>()
+        dbRefCategory.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for(categorySnapShot in snapshot.children){
+                    var categoryName = categorySnapShot.child("name").getValue(String::class.java)
+                    listCategory.add(CategoryModel(categoryName.toString()))
+                }
+                callback(listCategory)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("TAG", "Lỗi get data")
+            }
+        }
+        )
+    }
 
 }

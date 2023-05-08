@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.database.ConfigFirebase
 import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.view.customer.adapter.FoodAdapter
 import com.example.fooddeliveryapp.view.customer.adapter.FoodManageAdapter
@@ -41,7 +42,7 @@ class FoodManageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpAdapter(view)
+        getFood(view)
         val FAB = view.findViewById<FloatingActionButton>(R.id.fab_food_admin)
         FAB.setOnClickListener{
             handleOnClickFAB()
@@ -68,26 +69,20 @@ class FoodManageFragment : Fragment() {
             alertDialog.dismiss()
         }
     }
-    fun setUpAdapter(view : View){
+    fun setUpAdapter(view : View,dataListFood : List<FoodModel>){
         val args = arguments?.getString("Category","")
-        val listFood = listOf<FoodModel>(
-            FoodModel("Americano",R.drawable.coffee_americano.toString(),"Coffee",1.29),
-            FoodModel("Latte",R.drawable.coffee_latte.toString(),"Coffee",1.28),
-            FoodModel("Peach Tea",R.drawable.peach_tea.toString(),"Tea",1.8),
-            FoodModel("Lychee Tea",R.drawable.tea_lychee.toString(),"Tea",1.19),
-            FoodModel("Caramel Cake",R.drawable.cake_caramel.toString(),"Cake",1.59),
-            FoodModel("Cappuccino",R.drawable.capucino1.toString(),"Coffee",1.79),
-            FoodModel("Chocolate Cake",R.drawable.cake_chocolate.toString(),"Cake",1.19),
-            FoodModel("Matcha Freeze",R.drawable.iceblended_matcha.toString(),"Freeze",1.79),
-        )
-        Log.d("TAG", "setUpAdapter: $args")
         val title = view.findViewById<TextView>(R.id.tile_food_manage)
         title.text = args
-        var newList = listFood.filter { it.category == args }
+        var newList = dataListFood.filter { it.category == args }
         Log.d("TAG", "setUpAdapter: ${newList.size}")
         val adapterFood = FoodManageAdapter(newList)
         val rcvFood = view.findViewById<RecyclerView>(R.id.rcv_food_admin)
         rcvFood.adapter = adapterFood
         rcvFood.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
+    }
+    fun getFood(view: View){
+        ConfigFirebase().firebaseReferenceFood {
+            setUpAdapter(view,it)
+        }
     }
 }

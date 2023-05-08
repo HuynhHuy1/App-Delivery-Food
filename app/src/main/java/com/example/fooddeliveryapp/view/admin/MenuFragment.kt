@@ -16,6 +16,7 @@ import android.widget.GridLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.database.ConfigFirebase
 import com.example.fooddeliveryapp.model.CategoryModel
 import com.example.fooddeliveryapp.view.admin.adapter.onClickItemMenu
 import com.example.fooddeliveryapp.view.customer.adapter.AdapterMenuAdmin
@@ -44,28 +45,10 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val fragment_admin = requireActivity().findViewById<FrameLayout>(R.id.fragment_admin)
+        fragment_admin.visibility = View.VISIBLE
         requireActivity().findViewById<GridLayout>(R.id.gridLayout_admin).visibility = View.GONE
         val fabAdminMenu = view.findViewById<FloatingActionButton>(R.id.fab_menu_admin)
-        val FoodManageFragment = FoodManageFragment()
-        fragment_admin.visibility = View.VISIBLE
-        val listCategory = listOf<CategoryModel>(
-            CategoryModel("Tea"),
-            CategoryModel("Coffee"),
-            CategoryModel("Cake"),
-            CategoryModel("Freeze"),
-        )
-        val adapter = AdapterMenuAdmin(listCategory,object : onClickItemMenu{
-            override fun handleOnClickItem(toString: String) {
-                var data = Bundle()
-                data.putString("Category",toString)
-                FoodManageFragment.arguments = data
-                requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,FoodManageFragment).commitNow()
-            }
-
-        })
-        val rcvMenu = view.findViewById<RecyclerView>(R.id.rcv_menu_admin)
-        rcvMenu.adapter = adapter
-        rcvMenu.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
+        setAdapter(view)
 
         fabAdminMenu.setOnClickListener{
             handOnClickFAB(it)
@@ -91,6 +74,24 @@ class MenuFragment : Fragment() {
             dialogView.findViewById<Button>(R.id.btn_cancle_category).setOnClickListener {
                 alertDialog.dismiss()
             }
+
+    }
+    fun setAdapter(view: View){
+        ConfigFirebase().getCategoryFromFirebase{
+            val FoodManageFragment = FoodManageFragment()
+            val adapter = AdapterMenuAdmin(it,object : onClickItemMenu{
+                override fun handleOnClickItem(toString: String) {
+                    var data = Bundle()
+                    data.putString("Category",toString)
+                    FoodManageFragment.arguments = data
+                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,FoodManageFragment).commitNow()
+                }
+
+            })
+            val rcvMenu = view.findViewById<RecyclerView>(R.id.rcv_menu_admin)
+            rcvMenu.adapter = adapter
+            rcvMenu.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
+        }
 
     }
 

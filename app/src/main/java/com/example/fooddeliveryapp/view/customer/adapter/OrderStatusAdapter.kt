@@ -35,4 +35,5 @@ class OrderStatusAdapter(var listData: List<OrderModel>) : Adapter<OrderStatusAd
         holder.rcvFood.adapter = adapterOrder
         holder.totalPayment.text ="$ ${String.format("%.02f",listData[position].total)}"
     }
+    
 }

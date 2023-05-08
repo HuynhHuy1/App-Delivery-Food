@@ -31,7 +31,7 @@ class FoodManageAdapter(var listData : List<FoodModel>) : Adapter<FoodManageAdap
         Picasso.get().load(listData[position].image).into(holder.image)
         holder.name.setText(listData[position].name)
         holder.price.setText("$ ${listData[position].price}")
-        holder.image.setImageResource(listData[position].image.toInt())
+        Picasso.get().load(listData[position].image).into(holder.image)
     }
 
 }

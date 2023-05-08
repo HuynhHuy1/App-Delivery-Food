@@ -31,5 +31,4 @@ class AdapterMenuAdmin(var listData : List<CategoryModel>,var onClick: onClickIt
             onClick.handleOnClickItem(holder.textView.text.toString())
         }
     }
-
 }

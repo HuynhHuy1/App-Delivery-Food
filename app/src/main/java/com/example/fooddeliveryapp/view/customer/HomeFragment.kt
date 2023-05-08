@@ -1,16 +1,11 @@
 package com.example.fooddeliveryapp.view.customer
 
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,51 +46,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var configFirebase = ConfigFirebase()
-        configFirebase.firebaseReferenceFood{
-            var list = it.toList()
-            var listData = loadData(list)
-            var listTea = CategoryModel("Tea")
-            var listCoffe =  CategoryModel("Coffee")
-            var listFreeze = CategoryModel("Ice Blended")
-            var listCake =  CategoryModel("Cake")
-            var listAddItem = arrayListOf<FoodModel>()
-            var ListcategoryModel = listOf<CategoryModel>(
-                listCoffe,
-                listTea,listFreeze,listCake
-            )
-            addItemToCategory(listTea,list)
-            addItemToCategory(listCoffe,list)
-            addItemToCategory(listCake,list)
-            addItemToCategory(listFreeze,list)
-            var adapterCategory = CategoryAdapter(ListcategoryModel,object : handleOnClick {
-                override fun onClickItem(toString: String) {
-                    clickItemCategory(ListcategoryModel,toString,view,object : handleFoodItem {
-                        override fun clickAddFood(view: View, foodModel: FoodModel) {
-                            handleAddItemHome(view,listAddItem,foodModel)
-                            Log.d("List Add Item", "${1} : ${listAddItem[0].name}" )
-                        }
-                    })
-                }
-            })
-            var adapterFood = FoodAdapter(list,object : handleFoodItem {
-                override fun clickAddFood(view: View, foodModel: FoodModel) {
-                    handleAddItemHome(view,listAddItem,foodModel)
-                    Log.d("List Add Item", "${1} : ${listAddItem[0].name}" )
-                }
-
-            })
-            onClickInfo(view)
-            setAdapter(view,adapterFood,adapterCategory)
-        }
-
+        setCategoryAdapter(view)
 
     }
-    private fun handleAddItemHome(view: View, listAddItem : ArrayList<FoodModel>,foodModel: FoodModel){
-        listAddItem.add(foodModel)
-        viewModel.setListItem(listAddItem)
-        Toast.makeText(view.context,"Add Success",Toast.LENGTH_SHORT).show()
-    }
+
 
     private fun addItemToCategory(category : CategoryModel, foodModel: List<FoodModel>) : List<FoodModel>{
             for(i in foodModel.indices step 1){
@@ -120,48 +74,54 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-       private fun setAdapter(view : View, adapterFood: FoodAdapter,adapterCategory: CategoryAdapter){
-            var rcvFood = view.findViewById<RecyclerView>(R.id.rcvFood)
-            rcvFood.adapter = adapterFood
-            rcvFood.layoutManager = GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
+//       private fun setAdapterFood(view : View){
+//           var configFirebase = ConfigFirebase()
+//           configFirebase.firebaseReferenceFood{
+//               var list = it.toList()
+//               var listTea = CategoryModel("Tea")
+//               var listCoffe =  CategoryModel("Coffee")
+//               var listFreeze = CategoryModel("Ice Blended")
+//               var listCake =  CategoryModel("Cake")
+//               var listAddItem = arrayListOf<FoodModel>()
+//               var ListcategoryModel = listOf<CategoryModel>(
+//                   listCoffe,
+//                   listTea,listFreeze,listCake
+//               )
+//               var adapterCategory = CategoryAdapter(ListcategoryModel,object : handleOnClick {
+//                   override fun onClickItem(toString: String) {
+//                       clickItemCategory(ListcategoryModel,toString,view,object : handleFoodItem {
+//                           override fun clickAddFood(view: View, foodModel: FoodModel) {
+//                               handleAddItemHome(view,listAddItem,foodModel)
+//                               Log.d("List Add Item", "${1} : ${listAddItem[0].name}" )
+//                           }
+//                       })
+//
+//                   }
+//               })
+//               var adapterFood = FoodAdapter(list,object : handleFoodItem {
+//                   override fun clickAddFood(view: View, foodModel: FoodModel) {
+
+//                   }
+//
+//               })
+//               var rcvFood = view.findViewById<RecyclerView>(R.id.rcvFood)
+//               rcvFood.adapter = adapterFood
+//               rcvFood.layoutManager = GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
+//               var rcvCategory = view.findViewById<RecyclerView>(R.id.linear_list_cate1)
+//               rcvCategory.adapter = adapterCategory
+//               rcvCategory.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.HORIZONTAL,false)
+//           }
+//       }
+    private fun setCategoryAdapter(view: View){
+        ConfigFirebase().getCategoryFromFirebase {
+            var rcvFood = requireActivity().findViewById<RecyclerView>(R.id.rcvFood)
+            var adapterCategory = CategoryAdapter(it,object : handleOnClick {
+                override fun onClickItem(toString: String) {
+                }
+            },rcvFood,viewModel)
             var rcvCategory = view.findViewById<RecyclerView>(R.id.linear_list_cate1)
             rcvCategory.adapter = adapterCategory
             rcvCategory.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.HORIZONTAL,false)
         }
-        private fun onClickInfo(view : View){
-            var profileFragment = profileFragment()
-            var imageInfo = view.findViewById<ImageView>(R.id.image_info)
-            imageInfo.setOnClickListener{
-                requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment,profileFragment).commit()
-            }
-        }
-
-        private fun loadData(list : List<FoodModel>) : List<FoodModel>{
-            return listOf(
-                FoodModel("${list[0].name}", list[0].image,"${list[0].category}", list[0].price),
-                FoodModel("${list[1].name}",list[1].image,"${list[1].category}", list[0].price),
-                FoodModel("${list[2].name}", list[2].image,"${list[2].category}", list[0].price),
-                FoodModel("${list[0].name}", list[0].image,"${list[0].category}", list[0].price),
-                FoodModel("${list[0].name}", list[1].image,"${list[0].category}", list[0].price),
-                FoodModel("${list[0].name}", list[2].image,"${list[0].category}", list[0].price),
-                FoodModel("${list[0].name}", list[0].image,"${list[0].category}", list[0].price),
-                FoodModel("${list[0].name}", list[1].image,"${list[0].category}", list[0].price),
-//                FoodModel("Espresso", R.drawable.cappuccino3.toString(),"Coffee", 2.36),
-//                FoodModel("Americano", R.drawable.cappuccino4.toString(),"Coffee", 2.21),
-//                FoodModel("Latte", R.drawable.capucino1.toString(),"Coffee", 2.31),
-//                FoodModel("Lotus Tea", R.drawable.capuccino2.toString(),"Tea", 1.52),
-//                FoodModel("Peach Tea",R.drawable.cappuccino3.toString(),"Tea", 2.64),
-//                FoodModel("Lychee Tea", R.drawable.cappuccino4.toString(),"Tea", 2.21),
-//                FoodModel("Green Tea",R.drawable.capucino1.toString(),"Tea", 1.23),
-//                FoodModel("Chocolate freeze",R.drawable.capuccino2.toString(),"Freeze", 1.52),
-//                FoodModel("Green tea freeze",R.drawable.cappuccino3.toString(),"Freeze", 2.16),
-//                FoodModel("Caramel freeze",R.drawable.cappuccino4.toString(),"Freeze", 2.29),
-//                FoodModel("Cookie freeze",R.drawable.cappuccino4.toString(),"Freeze", 2.29),
-//                FoodModel("Banana cake",R.drawable.capucino1.toString(),"Cake", 2.36),
-//                FoodModel("Tiramisu cake",R.drawable.capuccino2.toString(),"Cake", 2.12),
-//                FoodModel("Chocolate cake", R.drawable.cappuccino3.toString(),"Cake", 2.36),
-//                FoodModel("Caramel cake",R.drawable.cappuccino4.toString(),"Cake", 2.11),
-            )
-
-        }
+    }
 }
