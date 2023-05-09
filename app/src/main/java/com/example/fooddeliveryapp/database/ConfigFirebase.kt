@@ -1,11 +1,16 @@
 package com.example.fooddeliveryapp.database
 
+import android.app.Activity
+import android.net.Uri
 import android.util.Log
+import android.widget.Toast
+import androidx.core.net.toUri
 import com.example.fooddeliveryapp.model.CategoryModel
 import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.view.customer.`interface`.handleGetData
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import javax.security.auth.callback.Callback
 
 class ConfigFirebase() {
@@ -14,6 +19,9 @@ class ConfigFirebase() {
     }
     val arrayList : ArrayList<FoodModel> by lazy{
         ArrayList<FoodModel>()
+    }
+    val dbStorage : FirebaseStorage by lazy {
+        FirebaseStorage.getInstance()
     }
         fun firebaseReferenceFood(callback: (ArrayList<FoodModel>) -> Unit){
             var dbRefFood = dbInstance.getReference("Food")
@@ -56,6 +64,20 @@ class ConfigFirebase() {
             }
         }
         )
+    }
+    fun addFoodToFirebase(foodModel: FoodModel, activity: Activity){
+        val storageRef = dbStorage.reference.child("image_food").child("Food/${foodModel.image.toUri().lastPathSegment}")
+        val uploadTask = storageRef.putFile(foodModel.image.toUri())
+        uploadTask.onSuccessTask {
+            storageRef.downloadUrl.addOnSuccessListener {
+               var ref =  dbInstance.reference.child("Food")
+                ref.push().setValue(foodModel, object : DatabaseReference.CompletionListener{
+                    override fun onComplete(error: DatabaseError?, ref: DatabaseReference) {
+                        Toast.makeText(activity,"Add Food Success",Toast.LENGTH_SHORT)
+                    }
+                })
+            }
+        }
     }
 
 }
