@@ -43,12 +43,13 @@ class OrderAdminAdapter(var listData: ArrayList<OrderModel>,var onClick : onClic
 
             holder.confirmBtn.setOnClickListener{
                 Log.d("TAG", "onBindViewHolder: ")
-                onClick.handleOnClickConfirm(position)
+                onClick.handleOnClickConfirm(position,listData[position].id)
+
 
             }
             holder.complete.setOnClickListener{
                 Log.d("TAG", "onBindViewHolder: ")
-                onClick.handleOnClickComplete(position)
+                onClick.handleOnClickComplete(position,listData[position].id)
                 Log.d("TAG", "onBindViewHolder111: ${listData.size}")
             }
 

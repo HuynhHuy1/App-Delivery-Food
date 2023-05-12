@@ -49,6 +49,7 @@ class FoodManageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val tvTitleCategory : TextView
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.food_manage, container, false)
@@ -81,8 +82,9 @@ class FoodManageFragment : Fragment() {
         dialogView.findViewById<Button>(R.id.btn_add_food).setOnClickListener {
             val editText1 = dialogView.findViewById<EditText>(R.id.ed_name_add_food).text.toString()
             val editText2 = dialogView.findViewById<EditText>(R.id.ed_price_add_food).text.toString().toDouble()
-            val editText3 = dialogView.findViewById<EditText>(R.id.ed_category_add_food).text.toString()
+            val editText3 =  view?.findViewById<TextView>(R.id.tile_food_manage)?.text.toString()
             var foodModel = FoodModel(editText1,uri.toString(),editText3,editText2)
+            Log.d("TAG", "handleOnClickFAB: ${editText3.toString()}")
             alertDialog.dismiss()
             ConfigFirebase().addFoodToFirebase(foodModel,requireActivity())
         }
@@ -97,18 +99,12 @@ class FoodManageFragment : Fragment() {
             title.text = args
             var newList = dataListFood.filter { it.category == args }
             Log.d("TAG", "setUpAdapter: ${newList.size}")
-            if(!isAdapterSet){
                 isAdapterSet = true
-                foodManageAdapter = FoodManageAdapter(newList)
+                foodManageAdapter = FoodManageAdapter(newList,requireActivity())
 
                 val rcvFood = view.findViewById<RecyclerView>(R.id.rcv_food_admin)
                 rcvFood.adapter = foodManageAdapter
                 rcvFood.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
-            }
-            else{
-                foodManageAdapter.notifyDataSetChanged()
-                Log.d("TAG", "setUpAdapter: Cap nhat")
-            }
 
     }
     fun getFood(view: View){

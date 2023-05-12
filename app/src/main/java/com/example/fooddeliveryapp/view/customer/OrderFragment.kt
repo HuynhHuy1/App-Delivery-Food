@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.database.ConfigFirebase
 import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.model.OrderModel
 import com.example.fooddeliveryapp.model.User
@@ -23,6 +24,7 @@ import com.example.fooddeliveryapp.view.customer.adapter.OrderAdapter
 import com.example.fooddeliveryapp.view.customer.`interface`.handleAdd
 import com.example.fooddeliveryapp.viewmodel.SendDataViewModel
 import java.time.LocalDateTime
+import kotlin.random.Random
 
 class OrderFragment : Fragment() {
     val viewModel : SendDataViewModel by lazy {
@@ -102,6 +104,7 @@ class OrderFragment : Fragment() {
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun handleOrder(user: User, listData : List<FoodModel>, view: View){
+        var id = (0..100000).random()
         var statusOrderFragment = StatusOrderFragment()
         val timerOrder = LocalDateTime.now()
         val hour = timerOrder.hour
@@ -111,8 +114,8 @@ class OrderFragment : Fragment() {
         val year = timerOrder.year
         val time = "${day}/${motnh}/${year}, ${hour}:${minute}"
         var total = price + priceDeliveryNumber
-        orderModel = OrderModel(user.address,listData,user,total,"Complete",time)
-        viewModel.setOrder(orderModel)
+        orderModel = OrderModel(id,user.address,listData,user,total,"Confirm",time)
+        ConfigFirebase().addOrderToFireBase(orderModel,requireActivity())
         Log.d("Order", "order thanh cong")
         requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment,statusOrderFragment).commit()
     }

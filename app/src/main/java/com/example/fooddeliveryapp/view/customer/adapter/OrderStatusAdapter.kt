@@ -16,6 +16,7 @@ class OrderStatusAdapter(var listData: List<OrderModel>) : Adapter<OrderStatusAd
         var timeOrder = view.findViewById<TextView>(R.id.time_order)
         var rcvFood = view.findViewById<RecyclerView>(R.id.rcv_status_food)
         var totalPayment = view.findViewById<TextView>(R.id.total_payment_status)
+        var tvBtn = view.findViewById<TextView>(R.id.statusConfirm)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
@@ -34,6 +35,8 @@ class OrderStatusAdapter(var listData: List<OrderModel>) : Adapter<OrderStatusAd
         val adapterOrder = FoodStatusAdapter(listData[position].foods)
         holder.rcvFood.adapter = adapterOrder
         holder.totalPayment.text ="$ ${String.format("%.02f",listData[position].total)}"
+        holder.tvBtn.text = listData[position].statusOrder
+
     }
     
 }

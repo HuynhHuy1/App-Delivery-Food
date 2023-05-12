@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.database.ConfigFirebase
 import com.example.fooddeliveryapp.model.OrderModel
 import com.example.fooddeliveryapp.view.customer.adapter.OrderStatusAdapter
 import com.example.fooddeliveryapp.viewmodel.SendDataViewModel
@@ -39,17 +40,14 @@ class StatusOrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var listOrder = ArrayList<OrderModel>()
-        var totalPayment = 0.0
-        viewModel.orderItem.observe(viewLifecycleOwner) {
-            Log.d("Status", "${it.foods.size} ")
-                listOrder.add(it)
-                Log.d("List Order Size", "${listOrder.size}")
-                var adapterStatusOrder = OrderStatusAdapter(listOrder)
-                var rcvStatus = view.findViewById<RecyclerView>(R.id.rcv_status)
-                rcvStatus.adapter = adapterStatusOrder
-                rcvStatus.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
+        ConfigFirebase().getOrderFromFirebase {
+
+            var adapterStatusOrder = OrderStatusAdapter(it)
+            var rcvStatus = view.findViewById<RecyclerView>(R.id.rcv_status)
+            rcvStatus.adapter = adapterStatusOrder
+            rcvStatus.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
         }
+
 
     }
 

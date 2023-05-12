@@ -33,7 +33,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class MenuFragment : Fragment() {
-
+    var isAdapter = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,8 +65,8 @@ class MenuFragment : Fragment() {
             dialogView.findViewById<Button>(R.id.btn_add_category).setOnClickListener {
                 val editText = dialogView.findViewById<EditText>(R.id.ed_add_category)
                 val inputText = editText.text.toString()
+                ConfigFirebase().addCategoryToFirebasem(CategoryModel(inputText),requireActivity())
                 // do something with the input text
-
                 alertDialog.dismiss()
             }
 
@@ -79,18 +79,18 @@ class MenuFragment : Fragment() {
     fun setAdapter(view: View){
         ConfigFirebase().getCategoryFromFirebase{
             val FoodManageFragment = FoodManageFragment()
-            val adapter = AdapterMenuAdmin(it,object : onClickItemMenu{
-                override fun handleOnClickItem(toString: String) {
-                    var data = Bundle()
-                    data.putString("Category",toString)
-                    FoodManageFragment.arguments = data
-                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,FoodManageFragment).commitNow()
-                }
-
-            })
-            val rcvMenu = view.findViewById<RecyclerView>(R.id.rcv_menu_admin)
-            rcvMenu.adapter = adapter
-            rcvMenu.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
+                val adapter = AdapterMenuAdmin(it,object : onClickItemMenu{
+                    override fun handleOnClickItem(toString: String) {
+                        var data = Bundle()
+                        data.putString("Category",toString)
+                        FoodManageFragment.arguments = data
+                        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,FoodManageFragment).commitNow()
+                    }
+                })
+                val rcvMenu = view.findViewById<RecyclerView>(R.id.rcv_menu_admin)
+                rcvMenu.adapter = adapter
+                rcvMenu.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
+                isAdapter = true
         }
 
     }

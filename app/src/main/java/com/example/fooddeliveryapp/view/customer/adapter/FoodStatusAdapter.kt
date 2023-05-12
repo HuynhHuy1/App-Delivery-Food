@@ -28,19 +28,20 @@ class FoodStatusAdapter(var listData : List<FoodModel>) : Adapter<FoodStatusAdap
     }
 
     override fun getItemCount(): Int {
-        return listData.distinct().size
+        return listData.distinctBy { it.name }.size
     }
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        holder.name.text = listData[position].name
-        var listData2 = listData.distinct()
+        var listData2 = listData.distinctBy {it.name
+        }
+
         holder.name.text = listData2[position].name
         listData.forEach{
             if(it.name == holder.name.text.toString()){
                 holder.count += 1
+                Log.d("TAG", "onBindViewHolder: ${listData2.size}")
             }
         }
         holder.countFood.text = "x ${holder.count}"
-
         holder.price.text = "$ ${String.format("%.02f",listData[position].price * holder.count)  }"
         Picasso.get().load(listData2[position].image).into(holder.image)
     }

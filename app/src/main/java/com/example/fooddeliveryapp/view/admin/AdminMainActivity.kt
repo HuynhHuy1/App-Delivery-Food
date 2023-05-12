@@ -38,6 +38,7 @@ class AdminMainActivity : AppCompatActivity() {
                         1 -> {
                             tv1.setTextColor(getResources().getColor(R.color.white));
                             tv2.setTextColor(getResources().getColor(R.color.teal_700));
+                            Log.d("TAG", "onPageSelected: ${position}")
                         }
                     }
             }
