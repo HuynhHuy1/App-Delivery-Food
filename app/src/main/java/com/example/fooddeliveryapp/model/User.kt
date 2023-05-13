@@ -1,4 +1,4 @@
 package com.example.fooddeliveryapp.model
 
-class User(var name : String, var avatar : Int, var address : String) {
+class User(var userName : String,var name : String, var avatar : String, var address : String, var phoneNumber : String) {
 }

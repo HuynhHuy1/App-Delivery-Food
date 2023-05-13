@@ -13,10 +13,11 @@ import com.example.fooddeliveryapp.model.AccountModel
 import com.example.fooddeliveryapp.view.admin.AdminMainActivity
 import com.example.fooddeliveryapp.view.customer.MainActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
 
 class LoginActivity : AppCompatActivity() {
     val accountAdmin : AccountModel by lazy {
-        AccountModel("admin","123")
+        AccountModel("admin")
     }
     val auth : FirebaseAuth by lazy{
         FirebaseAuth.getInstance()
@@ -37,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this,"Please enter in full",Toast.LENGTH_SHORT).show()
             }
             else{
-                if(tv1.text.toString() == accountAdmin.userName && tv2.text.toString() == accountAdmin.passWord){
+                if(tv1.text.toString() == accountAdmin.userName && tv2.text.toString() == "123"){
                     startActivity(Intent(this,AdminMainActivity::class.java))
                 }
                 else{
@@ -45,7 +46,12 @@ class LoginActivity : AppCompatActivity() {
                         .addOnCompleteListener {task ->
                             if(task.isSuccessful){
                                 val user = auth.currentUser
-                                startActivity(Intent(this,MainActivity::class.java))
+                                var intent = Intent(this, MainActivity::class.java)
+                                var newAcount = AccountModel(user!!.email,)
+                                var gson = Gson()
+                                var accountJson = gson.toJson(newAcount)
+                                intent.putExtra("account",accountJson)
+                                startActivity(intent)
                                 finish()
                             }
                             else{

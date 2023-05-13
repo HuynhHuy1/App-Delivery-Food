@@ -100,15 +100,14 @@ class FoodManageFragment : Fragment() {
             var newList = dataListFood.filter { it.category == args }
             Log.d("TAG", "setUpAdapter: ${newList.size}")
                 isAdapterSet = true
-                foodManageAdapter = FoodManageAdapter(newList,requireActivity())
-
+                foodManageAdapter = FoodManageAdapter(newList)
                 val rcvFood = view.findViewById<RecyclerView>(R.id.rcv_food_admin)
                 rcvFood.adapter = foodManageAdapter
                 rcvFood.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
 
+
     }
     fun getFood(view: View){
-
         ConfigFirebase().firebaseReferenceFood {
             Log.d("TAG", "getFood: ${it.size}")
             setUpAdapter(view,it)

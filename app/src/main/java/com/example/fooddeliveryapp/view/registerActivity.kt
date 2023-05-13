@@ -9,8 +9,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.database.ConfigFirebase
+import com.example.fooddeliveryapp.model.AccountModel
+import com.example.fooddeliveryapp.model.User
 import com.example.fooddeliveryapp.view.customer.MainActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
 
 class registerActivity : AppCompatActivity() {
      private val auth: FirebaseAuth by lazy{
@@ -46,10 +50,15 @@ class registerActivity : AppCompatActivity() {
                             if (task.isSuccessful) {
                                 progressDialog.dismiss()
                                 val user = auth.currentUser
-                                startActivity(Intent(this, MainActivity::class.java))
+                                var intent = Intent(this, MainActivity::class.java)
+                                var gson = Gson()
+                                var newAcount = AccountModel(user!!.email,)
+                                var accountJson = gson.toJson(newAcount,AccountModel::class.java)
+                                intent.putExtra("account",accountJson)
+                                ConfigFirebase().getAccountFromFireBase(newAcount.userName,newAcount)
+                                startActivity(intent)
                                 finish()
                             } else {
-
                                 progressDialog.dismiss()
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(

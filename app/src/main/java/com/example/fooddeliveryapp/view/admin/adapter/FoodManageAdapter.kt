@@ -15,7 +15,7 @@ import com.example.fooddeliveryapp.model.FoodModel
 import com.example.fooddeliveryapp.view.customer.`interface`.handleFoodItem
 import com.squareup.picasso.Picasso
 
-class FoodManageAdapter(var listData : List<FoodModel>,var activity : Activity) : Adapter<FoodManageAdapter.viewHolder>() {
+class FoodManageAdapter(var listData : List<FoodModel>  ) : Adapter<FoodManageAdapter.viewHolder>() {
     class viewHolder(view :View ) : ViewHolder(view){
         var name = view.findViewById<TextView>(R.id.name_order_adapter_admin)
         var image = view.findViewById<ImageView>(R.id.image_order_admin)

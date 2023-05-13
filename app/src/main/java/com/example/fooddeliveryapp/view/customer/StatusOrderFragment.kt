@@ -1,7 +1,6 @@
 package com.example.fooddeliveryapp.view.customer
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.database.ConfigFirebase
-import com.example.fooddeliveryapp.model.OrderModel
+import com.example.fooddeliveryapp.model.User
 import com.example.fooddeliveryapp.view.customer.adapter.OrderStatusAdapter
 import com.example.fooddeliveryapp.viewmodel.SendDataViewModel
 
@@ -25,7 +24,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [StatusOrderFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class StatusOrderFragment : Fragment() {
+class StatusOrderFragment(user: User) : Fragment() {
     val viewModel : SendDataViewModel by lazy {
         ViewModelProvider(requireActivity()).get(SendDataViewModel::class.java)
     }

@@ -24,9 +24,8 @@ import com.example.fooddeliveryapp.view.customer.adapter.OrderAdapter
 import com.example.fooddeliveryapp.view.customer.`interface`.handleAdd
 import com.example.fooddeliveryapp.viewmodel.SendDataViewModel
 import java.time.LocalDateTime
-import kotlin.random.Random
 
-class OrderFragment : Fragment() {
+class OrderFragment(user: User) : Fragment() {
     val viewModel : SendDataViewModel by lazy {
         ViewModelProvider(requireActivity()).get(SendDataViewModel::class.java)
     }
@@ -43,7 +42,7 @@ class OrderFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var user1  = User("Huy",R.drawable.avt2,"234 Le Trong Tan")
+        var user1  = User("","Huy",R.drawable.avt2.toString(),"234 Le Trong Tan","0935484164")
         var rcvOrder = view.findViewById<RecyclerView>(R.id.linear3)
         viewModel.listItem.observe(viewLifecycleOwner, Observer {
             var adapterOrder = OrderAdapter(it,object : handleAdd{
@@ -105,7 +104,7 @@ class OrderFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun handleOrder(user: User, listData : List<FoodModel>, view: View){
         var id = (0..100000).random()
-        var statusOrderFragment = StatusOrderFragment()
+        var statusOrderFragment = StatusOrderFragment(User("","","","","",))
         val timerOrder = LocalDateTime.now()
         val hour = timerOrder.hour
         val minute = timerOrder.minute
