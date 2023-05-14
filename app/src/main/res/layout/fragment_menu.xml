@@ -14,23 +14,31 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <GridLayout
+        <LinearLayout
             android:background="#2C3333"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
             android:orientation="horizontal"
             android:paddingTop="20dp"
             android:paddingBottom="40dp">
+            <ImageView
+                android:id="@+id/btn_back_menu_admin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_arrow_back_ios_24"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="20dp"
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Menu Manage"
-                android:gravity="center"
                 android:textSize="40dp"
+                android:gravity="center"
                 android:fontFamily="@font/sorabold"
                 />
-        </GridLayout>
+        </LinearLayout>
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"

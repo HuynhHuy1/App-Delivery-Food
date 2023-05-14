@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
@@ -25,10 +27,11 @@ import com.example.fooddeliveryapp.view.customer.`interface`.handleAdd
 import com.example.fooddeliveryapp.viewmodel.SendDataViewModel
 import java.time.LocalDateTime
 
-class OrderFragment(user: User) : Fragment() {
+class OrderFragment(var user: User) : Fragment() {
     val viewModel : SendDataViewModel by lazy {
         ViewModelProvider(requireActivity()).get(SendDataViewModel::class.java)
     }
+    lateinit var adapterOrder : OrderAdapter
     var priceDeliveryNumber = 1.15
     var price = 0.0
     lateinit var orderModel: OrderModel
@@ -42,38 +45,46 @@ class OrderFragment(user: User) : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var user1  = User("","Huy",R.drawable.avt2.toString(),"234 Le Trong Tan","0935484164")
+        var user1  = user
         var rcvOrder = view.findViewById<RecyclerView>(R.id.linear3)
+        var btnBack = view.findViewById<ImageView>(R.id.btn_back_order)
+        btnBack.setOnClickListener{
+            fragmentManager?.popBackStack()
+        }
         viewModel.listItem.observe(viewLifecycleOwner, Observer {
-            var adapterOrder = OrderAdapter(it,object : handleAdd{
-                override fun handAddOnClick(foodModel: FoodModel) {
-                    var tempList = it.toMutableList()
-                    tempList.add(foodModel)
-                    viewModel.listItem.postValue(tempList.toList())
-                    Log.d("List 10","${it.size}")
-                }
-
-                override fun handSubOnClick(foodModel: FoodModel) {
-                    var tempList = it.toMutableList()
-                    tempList.remove(foodModel)
-                    viewModel.listItem.postValue(tempList.toList())
-                    Log.d("List 11","${it.size}")
-
-                }
-
-            })
-            setInfoOrder(view,user1,it)
-            rcvOrder.adapter = adapterOrder
-            rcvOrder.layoutManager =
-                LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
-            rcvOrder.setOnClickListener {
-                view.findViewById<ConstraintLayout>(R.id.layout_order).visibility = View.GONE
+            if(it.isEmpty()){
+                view.findViewById<TextView>(R.id.textEmpty).visibility = View.VISIBLE
+                Log.d("TAG", "onViewCreated: rong")
             }
+            else{
+                adapterOrder = OrderAdapter(it,object : handleAdd{
+                    override fun handAddOnClick(foodModel: FoodModel) {
+                        var tempList = it.toMutableList()
+                        tempList.add(foodModel)
+                        viewModel.listItem.postValue(tempList.toList())
+                        Log.d("List 10","${it.size}")
+                    }
+                    override fun handSubOnClick(foodModel: FoodModel) {
+                        var tempList = it.toMutableList()
+                        tempList.remove(foodModel)
+                        viewModel.listItem.postValue(tempList.toList())
+                        Log.d("List 11","${it.size}")
 
+                    }
+
+                })
+                setInfoOrder(view,user1,it,rcvOrder)
+                rcvOrder.adapter = adapterOrder
+                rcvOrder.layoutManager =
+                    LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
+                rcvOrder.setOnClickListener {
+                    view.findViewById<ConstraintLayout>(R.id.layout_order).visibility = View.GONE
+                }
+            }
         })
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun setInfoOrder(view: View, user: User, listData : List<FoodModel>) {
+    fun setInfoOrder(view: View, user: User, listData: List<FoodModel>, rcvOrder: RecyclerView) {
         price = 0.0
         listData.forEach{
             Log.d("TAG", "for each : ${listData.size} ")
@@ -90,7 +101,12 @@ class OrderFragment(user: User) : Fragment() {
         total.text = "$ ${String.format("%.2f",price + priceDeliveryNumber)}"
         var btnOrder = view.findViewById<TextView>(R.id.btnOrder)
         btnOrder.setOnClickListener{
-            handleOrder(user,listData,view)
+            if(user.userName == ""){
+                Toast.makeText(requireActivity(),"Please update information to order",Toast.LENGTH_SHORT).show()
+            }
+            else{
+                handleOrder(user,listData,view,rcvOrder)
+            }
         }
         handleEditAddress(view)
     }
@@ -102,9 +118,9 @@ class OrderFragment(user: User) : Fragment() {
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun handleOrder(user: User, listData : List<FoodModel>, view: View){
+    fun handleOrder(user: User, listData: List<FoodModel>, view: View, rcvOrder: RecyclerView){
         var id = (0..100000).random()
-        var statusOrderFragment = StatusOrderFragment(User("","","","","",))
+        var statusOrderFragment = StatusOrderFragment(user)
         val timerOrder = LocalDateTime.now()
         val hour = timerOrder.hour
         val minute = timerOrder.minute

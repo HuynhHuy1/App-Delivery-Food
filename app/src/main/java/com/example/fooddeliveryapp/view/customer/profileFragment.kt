@@ -40,7 +40,10 @@ class profileFragment(var newAccount: AccountModel,var user: User) : Fragment() 
         bottomnav.visibility = View.GONE
         checkInputInfo(view)
         setLayoutProfile(view)
-
+        var btnBack = view.findViewById<ImageView>(R.id.btn_back_profile)
+        btnBack.setOnClickListener{
+            fragmentManager?.popBackStack()
+        }
         var FAB = requireActivity().findViewById<FloatingActionButton>(R.id.FAB_profile)
         FAB.setOnClickListener {
             pickerImage()
@@ -57,8 +60,8 @@ class profileFragment(var newAccount: AccountModel,var user: User) : Fragment() 
             var newUser = User(newAccount.userName,tv1,uri.toString(),tv3,tv4)
             val homeFragment = HomeFragment(newAccount,newUser)
             ConfigFirebase().getAccountFromFireBase(newAccount.userName,newAccount )
-            Toast.makeText(requireActivity(),"Thanh cong",Toast.LENGTH_SHORT).show()
-            ConfigFirebase().updateUser(newUser)
+            Toast.makeText(requireActivity(),"${newAccount.userName}",Toast.LENGTH_SHORT).show()
+            ConfigFirebase().updateUser(newUser,newAccount.userName)
             requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment,homeFragment).commitNow()
         }
     }

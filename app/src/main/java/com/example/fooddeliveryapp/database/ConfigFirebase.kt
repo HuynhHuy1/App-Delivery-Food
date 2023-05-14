@@ -2,19 +2,12 @@ package com.example.fooddeliveryapp.database
 
 import android.app.Activity
 import android.net.Uri
-import android.provider.ContactsContract.Data
-import android.renderscript.Sampler.Value
 import android.util.Log
 import android.widget.Toast
 import androidx.core.net.toUri
 import com.example.fooddeliveryapp.model.*
-import com.example.fooddeliveryapp.view.customer.`interface`.handleGetData
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import javax.security.auth.callback.Callback
 
 class ConfigFirebase() {
      val dbInstance :  FirebaseDatabase by lazy {
@@ -114,6 +107,7 @@ class ConfigFirebase() {
                     val id = it.child("id").getValue(Int::class.java)
                     val address = it.child("address").getValue(String::class.java)
                     val foodsSnapshot = it.child("foods")
+                    val userSnapshot = it.child("user")
                     val foodsList = mutableListOf<FoodModel>()
                     foodsSnapshot.children.forEach { foodSnapshot ->
                         val name = foodSnapshot.child("name").getValue(String::class.java)
@@ -123,11 +117,11 @@ class ConfigFirebase() {
                         val food = FoodModel(name!!, image!!, category!!, price!!)
                         foodsList.add(food)
                     }
-                    val userSnapshot = it.child("user")
-                    val avatar = userSnapshot.child("avatar").getValue(Int::class.java)
-                    val name = userSnapshot.child("name").getValue(String::class.java)
-                    val user = User("",name!!.toString(),avatar!!.toString(),address!!, "0935")
 
+                    val name = userSnapshot.child("name").getValue(String::class.java)
+                    val userName = userSnapshot.child("userName").getValue(String::class.java)
+                    val userPhone = userSnapshot.child("phoneNumber").getValue(String::class.java)
+                    val user = User(userName!!,name!!.toString(),"",address!!, userPhone!!)
                     val total = it.child("total").getValue(Double::class.java)
                     val statusOrder = it.child("statusOrder").getValue(String::class.java)
                     val timeOrder = it.child("timeOrder").getValue(String::class.java)
@@ -170,16 +164,19 @@ class ConfigFirebase() {
             }
         })
     }
-    fun updateUser(user : User){
+    fun updateUser(user: User, accountModel: String){
         val storageRef = dbStorage.reference.child("image_user").child("avatar/${user.avatar.toUri().lastPathSegment}")
         val uploadTask = storageRef.putFile(user.avatar.toUri())
         uploadTask.onSuccessTask {
             storageRef.downloadUrl.addOnSuccessListener{
                 var newUser = User(user.userName,user.name,it.toString(),user.address, user.phoneNumber)
-               var dbRef = dbInstance.reference.child("User")
-                dbRef.push().setValue(newUser)
+                updateInfo(newUser,accountModel)
             }
         }
+    }
+    fun updateInfo(user : User,account : String){
+        var dbRef = dbInstance.reference.child("User")
+        dbRef.child(account.substringBefore(".")).setValue(user)
     }
     fun getProfileFromFirebae(accountModel: AccountModel,callback: (User) -> Unit){
         val dbRef = dbInstance.reference.child("User")
@@ -207,8 +204,6 @@ class ConfigFirebase() {
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-
         })
-
     }
 }

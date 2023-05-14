@@ -2,6 +2,7 @@ package com.example.fooddeliveryapp.view.customer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.database.ConfigFirebase
@@ -25,24 +26,25 @@ class MainActivity : AppCompatActivity() {
             var orderFragment = OrderFragment(it)
             var oderStatus = StatusOrderFragment(it)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment, homeFragment).commit()
+                .replace(R.id.fragment, homeFragment).addToBackStack(homeFragment.javaClass.simpleName).commit()
             var bottomnav = findViewById<BottomNavigationView>(R.id.bottomNavigationView_order)
             bottomnav.setOnNavigationItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.home -> {
                         supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragment, homeFragment).commit()
+                            .replace(R.id.fragment, homeFragment).addToBackStack(homeFragment.javaClass.simpleName).commit()
                         true
                     }
                     R.id.order -> {
                         bottomnav.visibility = View.GONE
                         supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragment, orderFragment).commitNow()
+                            .replace(R.id.fragment, orderFragment).addToBackStack(orderFragment.javaClass.simpleName).commit()
                         true
                     }
                     R.id.orderstatus -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.fragment, oderStatus)
-                            .commitNow()
+                        bottomnav.visibility = View.GONE
+                        supportFragmentManager.beginTransaction().replace(R.id.fragment, oderStatus).addToBackStack(oderStatus.javaClass.simpleName)
+                            .commit()
                         true
                     }
                     else -> false
@@ -50,4 +52,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 }

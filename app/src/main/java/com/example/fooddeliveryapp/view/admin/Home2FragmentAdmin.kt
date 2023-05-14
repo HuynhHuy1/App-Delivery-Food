@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import com.example.fooddeliveryapp.database.ConfigFirebase
 import com.example.fooddeliveryapp.model.OrderModel
 import com.example.fooddeliveryapp.view.admin.adapter.onClickOrder
 import com.example.fooddeliveryapp.view.customer.adapter.OrderAdminAdapter
+import com.example.fooddeliveryapp.view.customer.adapter.OrderAdminAdapter2
 
 class Home2FragmentAdmin : Fragment() {
     override fun onCreateView(
@@ -27,9 +29,6 @@ class Home2FragmentAdmin : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setAdapter(view)
     }
-//    fun handleOnClickCompleteBtn(view : View){
-//        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,home2).commitNow()
-//    }
     fun setAdapter(view : View){
         ConfigFirebase().getOrderFromFirebase {
             var listInProgress = ArrayList<OrderModel>()
@@ -38,21 +37,12 @@ class Home2FragmentAdmin : Fragment() {
                     listInProgress.add(it)
                 }
             }
-            var adapterOrderAdmin = OrderAdminAdapter(listInProgress, object : onClickOrder{
-                override fun handleOnClickConfirm(position: Int, id: Int) {
-                }
-
-                override fun handleOnClickComplete(position: Int, id: Int) {
-//                    handleOnClickCompleteBtn(view)
-                }
-
-            })
+            var adapterOrderAdmin = OrderAdminAdapter2(listInProgress)
             Log.d("TAG", "onViewCreated: frg2")
             adapterOrderAdmin.notifyDataSetChanged()
             var rcvorderAdmin = requireActivity().findViewById<RecyclerView>(R.id.rcv_home_fragment_admin_2)
             rcvorderAdmin.adapter = adapterOrderAdmin
             rcvorderAdmin.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.VERTICAL,false)
-
         }
     }
 }

@@ -57,7 +57,6 @@ class FoodManageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_add_food, null)
         selectedImageView = dialogView?.findViewById<ImageView>(R.id.imageView_add_food)
         btnImageView= dialogView?.findViewById<Button>(R.id.add_image_food)

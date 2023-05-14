@@ -1,17 +1,21 @@
 package com.example.fooddeliveryapp.view.admin
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.example.fooddeliveryapp.R
+import com.example.fooddeliveryapp.view.LoginActivity
 import com.example.fooddeliveryapp.view.admin.adapter.AdapterViewPager2
 import com.google.android.material.navigation.NavigationView
+import kotlin.concurrent.fixedRateTimer
 
 class AdminMainActivity : AppCompatActivity() {
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
@@ -59,14 +63,20 @@ class AdminMainActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.manageMenuNavi -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,menuFragment).commitNow()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,menuFragment).addToBackStack(menuFragment.javaClass.simpleName).commit()
                     Log.d("TAG", "handleClickItem: ")
                     true
                 }
                 R.id.manageShopNavi2 -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,updateFragmentAdmin).commitNow()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,updateFragmentAdmin).commit()
                     Log.d("TAG", "handleClickItem:1 ")
                     true
+                }
+                R.id.logoutAdmin -> {
+                    var intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    true
+
                 }
                 else -> false
             }

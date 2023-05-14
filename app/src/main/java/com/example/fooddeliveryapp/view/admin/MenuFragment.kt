@@ -2,6 +2,7 @@ package com.example.fooddeliveryapp.view.admin
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,10 +10,7 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.GridLayout
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddeliveryapp.R
@@ -49,6 +47,10 @@ class MenuFragment : Fragment() {
         requireActivity().findViewById<GridLayout>(R.id.gridLayout_admin).visibility = View.GONE
         val fabAdminMenu = view.findViewById<FloatingActionButton>(R.id.fab_menu_admin)
         setAdapter(view)
+        var btnBack = view.findViewById<ImageView>(R.id.btn_back_menu_admin)
+        btnBack.setOnClickListener{
+            startActivity(Intent(requireContext(),AdminMainActivity::class.java))
+        }
 
         fabAdminMenu.setOnClickListener{
             handOnClickFAB(it)

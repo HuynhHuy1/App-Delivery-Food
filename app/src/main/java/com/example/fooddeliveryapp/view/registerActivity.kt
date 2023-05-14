@@ -37,7 +37,7 @@ class registerActivity : AppCompatActivity() {
         btnSignUp.setOnClickListener {
             Log.d("TAG", "onCLickSignUp: ")
             if(ed1.text.toString() == "" ||ed2.text.toString() == "" ||ed3.text.toString() == ""){
-                Toast.makeText(this,"Please Enter In Full", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Please Enter Full", Toast.LENGTH_SHORT).show()
             }
             else{
                 if(ed2.text.toString() != ed3.text.toString()){

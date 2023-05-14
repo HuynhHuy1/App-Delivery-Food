@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,21 +39,9 @@ class Home1FragmentAdmin : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setAdapter(view)
+
     }
 
-    private fun handleCLickConfirm(view: View, id: Int) {
-        val confirmBtn = view.findViewById<TextView>(R.id.btn_admin_confirm)
-        val compleTeBtn = view.findViewById<TextView>(R.id.btn_complete_admin)
-        confirmBtn.visibility = View.GONE
-        compleTeBtn.visibility = View.VISIBLE
-        ConfigFirebase().updateOrder(id,"Confirm")
-        Log.d("TAG", "handleOnClickCompleteBtn: ")
-    }
-
-    fun handleOnClickCompleteBtn(view : View,id: Int){
-        ConfigFirebase().updateOrder(id,"Complete")
-        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,home2).commitNow()
-    }
     fun setAdapter(view : View){
         ConfigFirebase().getOrderFromFirebase {
             var listInProgress = ArrayList<OrderModel>()
@@ -63,11 +52,12 @@ class Home1FragmentAdmin : Fragment() {
             }
             var adapterOrderAdmin = OrderAdminAdapter(listInProgress, object : onClickOrder{
                 override fun handleOnClickConfirm(position: Int, id: Int) {
-                    handleCLickConfirm(view,id)
+                    ConfigFirebase().updateOrder(id,"Confirm")
                 }
 
                 override fun handleOnClickComplete(position : Int,id: Int) {
-                    handleOnClickCompleteBtn(view,id)
+                    ConfigFirebase().updateOrder(id,"Complete")
+                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_admin,home2).commitNow()
                 }
 
             })

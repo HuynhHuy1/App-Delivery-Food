@@ -1,12 +1,14 @@
 package com.example.fooddeliveryapp.view.customer.adapter
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +24,7 @@ import com.example.fooddeliveryapp.viewmodel.SendDataViewModel
 class CategoryAdapter(
     private var listData: List<CategoryModel>,
     var handleOnClick: handleOnClick,
-    var rcvFood: RecyclerView,var viewModel: SendDataViewModel
+    var rcvFood: RecyclerView,var viewModel: SendDataViewModel,var activity: Activity
 ): Adapter<CategoryAdapter.viewHolder>() {
 
     class viewHolder(view :View ) : ViewHolder(view){
@@ -75,17 +77,60 @@ class CategoryAdapter(
                 }
     }
     fun handleOnClickItem(holder : viewHolder,category : String){
+
         ConfigFirebase().firebaseReferenceFood {
-            var newList = it.filter {
-                it.category== category
+            var newList = listOf<FoodModel>()
+            if(category == "All"){
+                newList = it
             }
+            else{
+                newList = it.filter {
+                    it.category== category
+                }
+            }
+            var fillerList = ArrayList<FoodModel>()
+
             var listAddItem = ArrayList<FoodModel>()
             val adapterFood = FoodAdapter(newList,object : handleFoodItem{
                 override fun clickAddFood(view: View, foodModel: FoodModel) {
                     handleAddItemHome(view,listAddItem,foodModel)
                 }
             })
-            rcvFood.adapter = adapterFood
+            var searchView = activity.findViewById<SearchView>(R.id.search_custommer)
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    fillerList.clear()
+                    for(item in it){
+                        if(item.name.toLowerCase().contains(query!!.toLowerCase())){
+                            fillerList.add(item)
+                        }
+                    }
+                    val adapterFood = FoodAdapter(fillerList,object : handleFoodItem{
+                        override fun clickAddFood(view: View, foodModel: FoodModel) {
+                            handleAddItemHome(view,listAddItem,foodModel)
+                        }
+                    })
+                    rcvFood.adapter = adapterFood
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    fillerList.clear()
+                    for(item in it){
+                        if(item.name.toLowerCase().contains(newText!!.toLowerCase())){
+                            fillerList.add(item)
+                        }
+                    }
+                    val adapterFood = FoodAdapter(fillerList,object : handleFoodItem{
+                        override fun clickAddFood(view: View, foodModel: FoodModel) {
+                            handleAddItemHome(view,listAddItem,foodModel)
+                        }
+                    })
+                    rcvFood.adapter = adapterFood
+                    return true
+                }
+
+            })
             rcvFood.adapter = adapterFood
             rcvFood.layoutManager = GridLayoutManager(holder.view.context,2,GridLayoutManager.VERTICAL,false)
         }

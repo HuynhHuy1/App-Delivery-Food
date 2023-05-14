@@ -1,11 +1,14 @@
 package com.example.fooddeliveryapp.view.customer
 
+import HistoryOrderrFragment
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -15,9 +18,11 @@ import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.database.ConfigFirebase
 import com.example.fooddeliveryapp.model.AccountModel
 import com.example.fooddeliveryapp.model.User
+import com.example.fooddeliveryapp.view.LoginActivity
 import com.example.fooddeliveryapp.view.customer.adapter.CategoryAdapter
 import com.example.fooddeliveryapp.view.customer.`interface`.handleOnClick
 import com.example.fooddeliveryapp.viewmodel.SendDataViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 
@@ -48,6 +53,7 @@ class HomeFragment(var newAccount: AccountModel,var  user: User) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUser(view)
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView_order).visibility = View.VISIBLE
         setCategoryAdapter(view)
         var drawLayout = view.findViewById<DrawerLayout>(R.id.drawerLayout_profile1)
         view.findViewById<ImageView>(R.id.image_info).setOnClickListener {
@@ -63,7 +69,7 @@ class HomeFragment(var newAccount: AccountModel,var  user: User) : Fragment() {
             var adapterCategory = CategoryAdapter(it,object : handleOnClick {
                 override fun onClickItem(toString: String) {
                 }
-            },rcvFood,viewModel)
+            },rcvFood,viewModel,requireActivity())
             var rcvCategory = view.findViewById<RecyclerView>(R.id.linear_list_cate1)
             rcvCategory.adapter = adapterCategory
             rcvCategory.layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.HORIZONTAL,false)
@@ -83,11 +89,22 @@ class HomeFragment(var newAccount: AccountModel,var  user: User) : Fragment() {
     private fun handleOnClickItem(view : View ){
         val navigationView = view.findViewById<NavigationView>(R.id.drawerLayout_profile)
         var profileFragment = profileFragment(newAccount,user)
+        val historyOrderrFragment = HistoryOrderrFragment(user)
         navigationView.setNavigationItemSelectedListener{
             when(it.itemId){
                 R.id.UpdateMenu -> {
-                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment,profileFragment).commitNow()
+                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment,profileFragment).addToBackStack(profileFragment.javaClass.simpleName).commit()
                    true
+                }
+                R.id.logoutCustomer -> {
+                    var intent = Intent(requireContext(),LoginActivity::class.java)
+                    startActivity(intent)
+                    true
+
+                }
+                R.id.historyOrder ->{
+                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment,historyOrderrFragment).addToBackStack(historyOrderrFragment.javaClass.simpleName).commit()
+                    true
                 }
                 else -> {
                     false

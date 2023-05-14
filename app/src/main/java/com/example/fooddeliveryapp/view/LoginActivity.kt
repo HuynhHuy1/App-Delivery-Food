@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
         loginBtn.setOnClickListener {
             Log.d("TAG", "${tv1.text.toString()}")
             if(tv1.text.toString() == "" || tv2.text.toString() == ""){
-                    Toast.makeText(this,"Please enter in full",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Please enter full",Toast.LENGTH_SHORT).show()
             }
             else{
                 if(tv1.text.toString() == accountAdmin.userName && tv2.text.toString() == "123"){

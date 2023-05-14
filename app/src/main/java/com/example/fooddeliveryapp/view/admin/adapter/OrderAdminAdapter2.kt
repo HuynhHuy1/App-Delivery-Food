@@ -14,7 +14,7 @@ import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.model.OrderModel
 import com.example.fooddeliveryapp.view.admin.adapter.onClickOrder
 
-class OrderAdminAdapter(var listData: ArrayList<OrderModel>,var onClick : onClickOrder) : Adapter<OrderAdminAdapter.viewHolder>() {
+class OrderAdminAdapter2(var listData: ArrayList<OrderModel>) : Adapter<OrderAdminAdapter2.viewHolder>() {
     class viewHolder(view :View ) : ViewHolder(view){
         val timeOrder = view.findViewById<TextView>(R.id.time_order_admin)
         val rcvFood = view.findViewById<RecyclerView>(R.id.rcv_status_food)
@@ -45,17 +45,8 @@ class OrderAdminAdapter(var listData: ArrayList<OrderModel>,var onClick : onClic
         val adapterOrder = FoodStatusAdapter(listData[position].foods)
         holder.rcvFood.adapter = adapterOrder
         holder.totalPayment.text ="$ ${String.format("%.02f",listData[position].total)}"
-            holder.confirmBtn.setOnClickListener{
-                Log.d("TAG", "onBindViewHolder: ")
-                holder.confirmBtn.visibility = View.GONE
-                holder.complete.visibility = View.VISIBLE
-                onClick.handleOnClickConfirm(position,listData[position].id)
-            }
-            holder.complete.setOnClickListener{
-                Log.d("TAG", "onBindViewHolder: ")
-                onClick.handleOnClickComplete(position,listData[position].id)
-                Log.d("TAG", "onBindViewHolder111: ${listData.size}")
-            }
+        holder.confirmBtn.visibility = View.GONE
+        holder.complete.visibility = View.GONE
 
     }
 }
